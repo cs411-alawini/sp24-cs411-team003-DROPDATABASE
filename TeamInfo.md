@@ -1,4 +1,4 @@
-# team003-DROP-DATABASE
+# team003-DROPDATABASE
 
 ## Basic Information
 
