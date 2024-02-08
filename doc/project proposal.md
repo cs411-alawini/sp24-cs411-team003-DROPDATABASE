@@ -71,4 +71,4 @@ Our project are major composed by three parts: database design, backend design, 
 | Database Design       | yunfanh2, rzieg3, tianyih5, ericjm4 |
 | Recommendation System | yunfanh2, rzieg3                    |
 | Frontend              | ericjm4                             |
-
+| Backend               | tianyih5                            |
