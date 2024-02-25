@@ -8,13 +8,13 @@ MusicStack
 
 Our database is designed to serve as a comprehensive music rating and discovery website. The core functionality of the platform allows users to rate their own music collections, including albums and tracks, providing a personalized music review experience. In addition to its rating features, the website offers robust search capabilities, allowing users to explore and discover albums and artists across various genres and eras. Besides, our website also incorporates a sophisticated recommendation system, which takes the user experience to the next level by personalizing music discovery based on individual preferences. Once users have rated a sufficient number of albums and tracks, and curated a list of their favorite music, the system employs algorithms to analyze their tastes and preferences.
 
-### **Description** 
+### Description 
 
 Our website tackles the challenge of finding music that aligns with personal tastes in today's saturated market. It offers a unique solution by allowing users to rate their music, share their preferences, and discover new tunes through a personalized recommendation system. This platform empowers users to explore and uncover music that resonates with them, fostering a community of shared musical interests and simplifying the discovery of new and unknown artists. By blending community-driven insights with tailored suggestions, our website ensures a more accessible and satisfying music discovery experience.
 
 ### Creative Component
 
-The most innovative and technically challenging feature we aim to include in our application is **a user-driven recommendation system** that goes beyond simple genre matching. This system will leverage users' ratings data to make personalized music suggestions. We plan to achieve this by implementing algorithms such as Markov Chains and Page-Rank, allowing for sophisticated analysis of user preferences and interactions to deliver highly relevant and personalized music recommendations.
+Unlike mainstream music platforms such as Spotify and Apple Music, our website prioritizes rating, sharing, and recommending music. We are dedicated to enhancing the user experience by simplifying the process of sharing musical tastes with others. At the heart of our website is a sophisticated matching algorithm designed to recommend music tailored to individual preferences, making it easier and more elegant for users to discover songs they'll love. Our core mission is to foster a community where music enthusiasts can effortlessly exchange recommendations and explore a wide array of musical genres, guided by personalized insights.
 
 ### Usefulness
 
@@ -22,15 +22,18 @@ Our site will allow users to **rate music and view the ratings of others**, in a
 
 This is similar to the functionality of RateYourMusic, however we aim to use the rating system to generate songs that the user may like by utilizing a Markov chain. This may generate more helpful recommendations than other music recommendation sites because it takes into consideration shared taste with other users as opposed to just mood and genre.
 
-### **Realness**
+### Realness
 
 Our project sources data from Kaggle and open-source music databases, primarily in CSV format, totaling around 4GB. This data encompasses detailed album information and user ratings, crucial for our recommendation system. The album data provides insights into artists, genres, and tracks, while user ratings help tailor personalized music suggestions. This combination ensures a rich dataset for developing a user-driven recommendation engine, leveraging the depth of both music details and user preferences.
 
 **Dataset we use:**
 
-| Album Metadata | [**https://data.world/arcadeanalytics/best-500-albums-amazon-neptune**](https://data.world/arcadeanalytics/best-500-albums-amazon-neptune) |
-| -------------- | ------------------------------------------------------------ |
-| Music Rating   | [**https://www.kaggle.com/datasets/ofurkancoban/discogs-releases-dataset/data**](https://www.kaggle.com/datasets/ofurkancoban/discogs-releases-dataset/data) |
+| Description    | Resources URL                                                | Entities                   |
+| -------------- | :----------------------------------------------------------- | -------------------------- |
+| Album Metadata | [**https://data.world/arcadeanalytics/best-500-albums-amazon-neptune**](https://data.world/arcadeanalytics/best-500-albums-amazon-neptune) | Album,Track,Artist,Genre   |
+| Music Rating   | [**https://www.kaggle.com/datasets/ofurkancoban/discogs-releases-dataset/data**](https://www.kaggle.com/datasets/ofurkancoban/discogs-releases-dataset/data) | Track_rating, album_rating |
+
+
 
 ### Functionality 
 
@@ -38,7 +41,12 @@ Our project sources data from Kaggle and open-source music databases, primarily 
 
 Below shows the UI-mockup for the front page of the "Music Stack", which driven to provide a clean and modern design with a focus on ease of navigation. In addition, we provide a huge banner displaying new releases or featured playlists, with smooth animations as new content slides in.
 
-![UI mockup](assets/5a96a5ce3a67f4baf87b79b72e17c59.png)
+We also create some simple static pages for mockup
++ [index page](assets/mockup/index.html)
++ [user page](assets/mockup/user.html)
+
+![Index Page mockup](assets/mockup/index_mockup.png)
+![User Page mockup](assets/mockup/user_mockup.jpg)
 
 **Features:**
 
@@ -71,4 +79,5 @@ Our project are major composed by three parts: database design, backend design, 
 | Database Design       | yunfanh2, rzieg3, tianyih5, ericjm4 |
 | Recommendation System | yunfanh2, rzieg3                    |
 | Frontend              | ericjm4                             |
-| Backend               | tianyih5                            |
+| Backend router Design    | tianyih5                            |
+| Backend CRUD Implement    | yunfanh2                            |
