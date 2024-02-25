@@ -12,7 +12,8 @@ We choose  to use Entity-Relationship Diagram for out conceptual design, you can
 - **Artist**: An Artist could be an individual or a group that performs or creates music. This entity is separate from Track and Album because artists are not attributes of music but creators that can be linked to multiple works across various albums and tracks.
 - **Genre**: Genre is used to categorize music and is an entity because it applies to both albums and tracks. It is not an attribute of either since a genre does not define a track or an album, but rather groups them into a wider music classification system.
 - **Playlist**: A Playlist is a user-created list of tracks. It is an entity because it represents a collection with properties such as a name and potentially a description. It also has a many-to-many relationship with tracks since a playlist can contain multiple tracks, and a track can be in multiple playlists.
-
+- **Album_Rating**: The assumption is that users may provide a numerical rating for any album they listen to. An Album_Rating entity is needed to store this information. Each record in this entity represents a unique instance of a user providing a rating for an album, and therefore it has a composite primary key consisting of both the user's ID and the album's ID.
+- **Track_Rating**: Track_rating assumed that users may want to rate individual tracks. The Track_Rating entity captures these ratings. As with album ratings, each track rating is a unique occurrence of a user assigning a rating to a track. The primary key for this entity is also composite, made up of the user's ID and the track's ID.
 #### Relationships:
 
 - **User -> Album_Rating**: The relationship is many-to-many, implemented through an Album_Rating junction table, as users can rate multiple albums, and albums can have ratings from multiple users.
