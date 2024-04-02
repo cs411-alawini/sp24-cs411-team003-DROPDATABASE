@@ -1,0 +1,81 @@
+CREATE TABLE Artist (
+    ArtistID INTEGER AUTO_INCREMENT,
+    ArtistName VARCHAR(32),
+    PRIMARY KEY (ArtistID)
+);
+
+CREATE TABLE Album (
+    AlbumID INTEGER AUTO_INCREMENT,
+    AlbumTitle VARCHAR(32),
+    ReleaseDate DATETIME,
+    PRIMARY KEY (AlbumID)
+);
+
+CREATE TABLE Genre (
+    GenreName VARCHAR(32) PRIMARY KEY
+);
+
+CREATE TABLE ArtistAlbum (
+    ArtistID INTEGER,
+    AlbumID INTEGER,
+    FOREIGN KEY (ArtistID) REFERENCES Artist(ArtistID) ON DELETE CASCADE,
+    FOREIGN KEY (AlbumID) REFERENCES Album(AlbumID) ON DELETE CASCADE,
+    PRIMARY KEY (ArtistID, AlbumID)
+);
+
+CREATE TABLE AlbumGenre (
+    AlbumID INTEGER,
+    GenreName VARCHAR(32),
+    FOREIGN KEY (AlbumID) REFERENCES Album(AlbumID) ON DELETE CASCADE,
+    FOREIGN KEY (GenreName) REFERENCES Genre(GenreName) ON DELETE CASCADE,
+    PRIMARY KEY (AlbumID, GenreName)
+);
+
+CREATE TABLE Track (
+    TrackID INTEGER AUTO_INCREMENT,
+    TrackName VARCHAR(128),
+    AlbumID INTEGER,
+    FOREIGN KEY (AlbumID) REFERENCES Album(AlbumID) ON DELETE CASCADE,
+    PRIMARY KEY (TrackID)
+);
+
+CREATE TABLE User (
+    UserID INTEGER AUTO_INCREMENT,
+    UserName VARCHAR(32),
+    Password VARCHAR(32),
+    PRIMARY KEY (UserID)
+);
+
+CREATE TABLE RateTrack (
+    TrackID INTEGER,
+    UserID INTEGER,
+    Rating INTEGER, -- Assuming you want to store the rating as an integer
+    FOREIGN KEY (TrackID) REFERENCES Track(TrackID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    PRIMARY KEY (TrackID, UserID)
+);
+
+CREATE TABLE RateAlbum (
+    AlbumID INTEGER,
+    UserID INTEGER,
+    Rating INTEGER, -- Assuming you want to store the rating as an integer
+    FOREIGN KEY (AlbumID) REFERENCES Album(AlbumID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    PRIMARY KEY (AlbumID, UserID)
+);
+
+CREATE TABLE UserFollow (
+    UserID INTEGER,
+    FollowID INTEGER,
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (FollowID) REFERENCES User(UserID) ON DELETE CASCADE,
+    PRIMARY KEY (UserID, FollowID)
+);
+
+CREATE TABLE PlayList (
+    PlayListID INTEGER AUTO_INCREMENT,
+    PlayListName VARCHAR(32),
+    UserID INTEGER,
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    PRIMARY KEY (PlayListID)
+);
