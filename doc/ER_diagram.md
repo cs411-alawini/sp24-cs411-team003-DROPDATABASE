@@ -1,3 +1,3 @@
 ## ER Diagram
 
-![er diagram](er_disgram.svg)
+![er diagram](er_diagram.svg)
