@@ -49,7 +49,7 @@ CREATE TABLE User (
 CREATE TABLE RateTrack (
     TrackID INTEGER,
     UserID INTEGER,
-    Rating INTEGER, -- Assuming you want to store the rating as an integer
+    Rating INTEGER, 
     FOREIGN KEY (TrackID) REFERENCES Track(TrackID) ON DELETE CASCADE,
     FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
     PRIMARY KEY (TrackID, UserID)
@@ -58,7 +58,7 @@ CREATE TABLE RateTrack (
 CREATE TABLE RateAlbum (
     AlbumID INTEGER,
     UserID INTEGER,
-    Rating INTEGER, -- Assuming you want to store the rating as an integer
+    Rating INTEGER, 
     FOREIGN KEY (AlbumID) REFERENCES Album(AlbumID) ON DELETE CASCADE,
     FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
     PRIMARY KEY (AlbumID, UserID)
@@ -78,4 +78,13 @@ CREATE TABLE PlayList (
     UserID INTEGER,
     FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
     PRIMARY KEY (PlayListID)
+);
+
+
+CREATE TABLE ContainTracks (
+    PlayListID INTEGER,
+    TrackID INTEGER,
+    FOREIGN KEY (PlayListID) REFERENCES PlayList(PlayListID) ON DELETE CASCADE,
+    FOREIGN KEY (TrackID) REFERENCES Track(TrackID) ON DELETE CASCADE,
+    PRIMARY KEY (PlayListID, TrackID)
 );
