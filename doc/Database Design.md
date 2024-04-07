@@ -16,9 +16,9 @@ We choose  to use ER Diagram for out conceptual design, you can find the diagram
 - **Own (User-PlayList)**: it represent the relation between User and Playlist, and it's one-to-many because playlist can only owned by one user, but one user can have multiple playlists.
 - **Have (PlayList-Track)**: This is a one-to-many relationship because an album contains multiple tracks, but each track is associated with only one album.
 - **Made (Artist-Album)**: A many-to-many relationship is assumed here because a album may have multiple artists, and artists can contribute to multiple tracks.
-- **Has (Album -> Genre)**: Also many-to-many, since albums often fall into multiple genres, and a genre encompasses many albums.
-- **RateTrack (User -> Track)**: This is another many-to-many relationship facilitated by a Track_Rating junction table, allowing users to rate many tracks and tracks to receive ratings from many users.
-- **RateAlbum (User -> Album)**: This is similar to rateTrack relation, and has many-to-many relation.
+- **Has (Album-Genre)**: Also many-to-many, since albums often fall into multiple genres, and a genre encompasses many albums.
+- **RateTrack (User-Track)**: This is another many-to-many relationship facilitated by a Track_Rating junction table, allowing users to rate many tracks and tracks to receive ratings from many users.
+- **RateAlbum (User-Album)**: This is similar to rateTrack relation, and has many-to-many relation.
 - **Follow (User-User)**: A many-to-many relationship that indicate the relation that user can follow other user. 
 - **Contains (Album-Track)**: similar to Made Relation, it represent what trake does each album have. it's one-to-many because each album can have many tracks, but a track can only be owned by a single album.
 
