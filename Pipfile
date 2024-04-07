@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pymysql = "*"
+cloud-sql-python-connector = "*"
+sqlalchemy = "*"
+mysql = "*"
+mysqk = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
