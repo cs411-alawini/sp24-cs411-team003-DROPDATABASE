@@ -17,11 +17,11 @@
 
 ## Project Information
 
-|   Info      |        Description     |
-| ----------- | ---------------------- |
-|  Title      |       ProjectTitle     |
-| System URL  |      link_to_system    |
-| Video Link  |      link_to_video     |
+|   Info      | Description    |
+| ----------- |----------------|
+|  Title      | MusicStack     |
+| System URL  | link_to_system |
+| Video Link  | link_to_video  |
 
 ## Project Summary
 

@@ -1,16 +1,29 @@
-# team003-DROP-DATABASE
-This is a template for CS411 project repository. Please make sure that your title follows the convention: [TeamID]-[YourTeamName]. All TeamIDs should have a three-digit coding (i.e. if you are team 20, you should have `team020` as your ID.). You should also ensure that your URL for this repository is [sp24-cs411-team000-teamname.git] so TAs can correctly clone your repository and keep it up-to-date.
+# Usgae
 
-Once you set up your project, please remember to submit your team formation to the team form.
+## Create database
 
-## Permission
-Make your repository private. TAs will be able to access it even if it's private.
+`mysql -u <username> -p database < assets/create_db.sql`
 
-## Preparing for your release
-Each submission should be in its own [release](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases). Release are specific freezes to your repository. You should submit your commit hash on PrairieLearn. When tagging your stage, please use the tag `stage.x` where x is the number to represent the stage.
+## Use Python SQL Connector
 
-## Keeping things up-to-date
-Please make sure you keep your project root files up-to-date. Information for each file/folder are explained.
+Currently support Goole Cloud SQL connector and Local SQL connector
 
-## Code Contribution
-Individual code contributions will be used to evaluate individual contributions to the project.
+To use either connector, you need to include the `sql_server.ini` in your project root directory, the skeleton can be find in `sql_server_template.ini` and write the config to meet your demand
+### Google Cloud Connector
+
+
+**Step1: install google cloud CLI**: https://cloud.google.com/sdk/docs/install
+
+**Step2: login your google account**: in your terminal, run command below to login your google account:
+
+
+```bash
+gcloud auth application-default login
+```
+
+**Step3: run SQL API**
+
+run `examples/execute_sql.py`
+
+### Local SQL Connector
+write the config, then enjoy!
