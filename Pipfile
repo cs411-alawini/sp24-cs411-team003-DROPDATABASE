@@ -8,8 +8,11 @@ configparser = "*"
 sqlalchemy = "*"
 cloud-sql-python-connector = {extras = ["pymysql"], version = "*"}
 mysql-connector-python = "*"
+pydantic = "*"
+termcolor = "*"
 
 [dev-packages]
+devtools = "*"
 
 [requires]
 python_version = "3.11"
