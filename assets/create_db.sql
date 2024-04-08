@@ -1,12 +1,12 @@
 CREATE TABLE Artist (
     ArtistID INTEGER AUTO_INCREMENT,
-    ArtistName VARCHAR(32),
+    ArtistName VARCHAR(256),
     PRIMARY KEY (ArtistID)
 );
 
 CREATE TABLE Album (
     AlbumID INTEGER AUTO_INCREMENT,
-    AlbumTitle VARCHAR(32),
+    AlbumTitle VARCHAR(256),
     ReleaseDate DATETIME,
     PRIMARY KEY (AlbumID)
 );
@@ -33,7 +33,7 @@ CREATE TABLE AlbumGenre (
 
 CREATE TABLE Track (
     TrackID INTEGER AUTO_INCREMENT,
-    TrackName VARCHAR(128),
+    TrackName VARCHAR(512),
     AlbumID INTEGER,
     FOREIGN KEY (AlbumID) REFERENCES Album(AlbumID) ON DELETE CASCADE,
     PRIMARY KEY (TrackID)
@@ -74,7 +74,7 @@ CREATE TABLE UserFollow (
 
 CREATE TABLE PlayList (
     PlayListID INTEGER AUTO_INCREMENT,
-    PlayListName VARCHAR(32),
+    PlayListName VARCHAR(256),
     UserID INTEGER,
     FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
     PRIMARY KEY (PlayListID)
