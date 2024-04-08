@@ -1,4 +1,11 @@
-# Usgae
+# Usage
+
+## Setup Virtual Environment
+
+```
+pip install pipenv
+pipenv install
+```
 
 ## Create database
 
@@ -6,6 +13,7 @@ initialize the database structure by running
 
 `mysql -u <username> -p database < assets/create_db.sql`
 
+## Push data into database
 - Firstly, create a new config file called `sql_server.ini`,copy paste template from   `sql_server_template.ini`, set the config `dir=./assets/data` in `[data]` section (don't leave space between characters)
 - fill `[local_sql]` section with information about your database 
 - Secondly, save and run the `push_data.py` in utils file
