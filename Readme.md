@@ -5,6 +5,7 @@
 ```
 pip install pipenv
 pipenv install
+pipenv install -d
 ```
 
 ## Create database
