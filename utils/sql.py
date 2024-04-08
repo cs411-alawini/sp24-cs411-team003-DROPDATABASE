@@ -71,24 +71,42 @@ class GC_SQL:
 
 class LocalSQL:
     def __init__(self):
-        self.connection = mysql.connector.connect(
-            user=config['local_sql']['user'],
-            password=config['local_sql']['password'],
-            host=config['local_sql'].get('host', 'localhost'),
-            database=config['local_sql']['db_name']
-        )
-        self.cursor = self.connection.cursor()
+        self.__connection = None
+        self.__cursor = None
+        try:
+            self.__connection = mysql.connector.connect(
+                user=config['local_sql']['user'],
+                password=config['local_sql']['password'],
+                host=config['local_sql'].get('host', 'localhost'),
+                database=config['local_sql']['db_name']
+            )
+            self.__cursor = self.__connection.cursor(dictionary=True)
+        except mysql.connector.Error as err:
+            print(f"Error connecting to the database: {err}")
+            # Consider re-raising the exception or handling it as appropriate for your application
 
     def execute(self, query, params=None):
-        self.cursor.execute(query, params or ())
-        return self.cursor.fetchall()
+        if self.__cursor is None:
+            print("Attempted to execute a query without a database connection.")
+            return None
+        try:
+            self.__cursor.execute(query, params or ())
+            return self.__cursor.fetchall()
+        except mysql.connector.Error as err:
+            raise err
 
     def commit(self):
-        self.connection.commit()
+        if self.__connection:
+            self.__connection.commit()
 
     def rollback(self):
-        self.connection.rollback()
+        if self.__connection:
+            self.__connection.rollback()
 
-    def __del__(self):
-        self.cursor.close()
-        self.connection.close()
+    def close(self):
+        if self.__cursor is not None:
+            self.__cursor.close()
+            self.__cursor = None
+        if self.__connection is not None:
+            self.__connection.close()
+            self.__connection = None

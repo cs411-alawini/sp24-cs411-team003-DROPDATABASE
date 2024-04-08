@@ -1,24 +1,35 @@
 from utils import LocalSQL
 
-sql_cur = LocalSQL()
 
-# create table sample
-insert_query = '''
-CREATE TABLE sample (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL
-);
-'''
-insert_params = {'name': "John Doe", 'email': "johndoe@example.com"}
-rows_affected = sql_cur.execute(insert_query, insert_params)
-print(f"Rows inserted: {rows_affected}")
+def test_insert_album(db_manager, album_title, release_date):
+    try:
+        insert_query = "INSERT INTO album (AlbumTitle, ReleaseDate) VALUES (%s, %s)"
+        db_manager.execute(insert_query, (album_title, release_date))
+        db_manager.commit()
+        print("Insert successful and committed.")
+    except Exception as e:
+        print(f"Insert failed with error: {e}")
+        db_manager.rollback()
+        print("Rollback successful.")
 
-# Insert a new record into the 'users' table
-insert_query = "INSERT INTO sample (name, email) VALUES (:name, :email)"
-insert_params = {'name': "John Doe", 'email': "johndoe@example.com"}
-rows_affected = sql_cur.execute(insert_query, insert_params)
-print(f"Rows inserted: {rows_affected}")
 
-# Close the database connection
-sql_cur.close()
+def test_failed_insert(db_manager, album_title, release_date):
+    try:
+        # Intentionally using a wrong column name to force an error
+        insert_query = "INSERT INTO album (WrongColumnName, ReleaseDate) VALUES (%s, %s)"
+        db_manager.execute(insert_query, (album_title, release_date))
+        db_manager.commit()
+    except Exception as e:
+        print(f"Insert failed with error: {e}")
+        db_manager.rollback()
+        print("Rollback successful.")
+
+
+# Create an instance of the DatabaseManager
+db_manager = LocalSQL()
+
+# Test case: Successful insert
+test_insert_album(db_manager, "Test Album", "2024-01-01")
+
+# Test case: Failed insert and rollback
+test_failed_insert(db_manager, "Test Album", "2024-01-01")
