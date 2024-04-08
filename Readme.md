@@ -1,4 +1,11 @@
-# Usgae
+# Usage
+
+## Setup Virtual Environment
+
+```
+pip install pipenv
+pipenv install
+```
 
 ## Create database
 
@@ -6,8 +13,11 @@ initialize the database structure by running
 
 `mysql -u <username> -p database < assets/create_db.sql`
 
-then, we start to push the data into the database, the first step is to download the original csv data from google drive, and put all the csv in one folder, let's call it
-`./data`. the next step is to set the config `data_dir=./data`, and lastly, run the data pushing script: `assets/push_data.py`
+## Push data into database
+- Firstly, create a new config file called `sql_server.ini`,copy paste template from   `sql_server_template.ini`, set the config `dir=./assets/data` in `[data]` section (don't leave space between characters)
+- fill `[local_sql]` section with information about your database 
+- Secondly, save and run the `push_data.py` in utils file
+
 
 
 ## Python SQL Connector
