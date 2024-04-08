@@ -1,6 +1,7 @@
 import configparser
+import os
 
-CONFIG_DIR = './sql_server.ini'
+CONFIG_DIR = os.path.join(os.path.dirname(__file__), '..', 'sql_server.ini')
 
 
 class Config:

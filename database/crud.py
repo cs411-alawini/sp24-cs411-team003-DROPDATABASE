@@ -20,8 +20,7 @@ def get_top5_album_by_genre(genre: str) -> list[AlbumRating]:
     '''
 
     rows = sql_cur.execute(sql, (genre,))
-    albums = [AlbumRating(AlbumTitle=row[0], AvgRating=row[1]) for row in rows]
-    return albums
+    return rows
 
 
 @err_handler
@@ -48,8 +47,7 @@ def get_user_recommendations_by_artist(user_id: int) -> AlbumRecommendationList:
     '''
 
     rows = sql_cur.execute(sql, (user_id, user_id))
-    recommendations = [AlbumRecommendation(AlbumTitle=row[0], ArtistName=row[1]) for row in rows]
-    return AlbumRecommendationList(recommendations=recommendations)
+    return AlbumRecommendationList(recommendations=rows)
 
 
 def get_most_popular_tracks() -> PopularTracksResponse:
@@ -65,8 +63,7 @@ def get_most_popular_tracks() -> PopularTracksResponse:
         ORDER BY AvgRating DESC
         LIMIT 5;
     '''
-    rows = sql_cur.execute(sql)
-    tracks = [TrackRating(TrackName=row[0], AvgRating=row[1]) for row in rows]
+    tracks = sql_cur.execute(sql)
     return PopularTracksResponse(tracks=tracks)
 
 
@@ -90,5 +87,4 @@ def get_recommend_album_by_follow(user_id: int) -> AlbumRecommendationList:
     '''
 
     rows = sql_cur.execute(sql, (user_id,))
-    recommendations = [AlbumRecommendation(AlbumTitle=row[0], AvgRating=row[1]) for row in rows]
-    return AlbumRecommendationList(recommendations=recommendations)
+    return AlbumRecommendationList(recommendations=rows)
