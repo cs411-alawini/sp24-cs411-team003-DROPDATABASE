@@ -11,6 +11,7 @@ mysql-connector-python = "*"
 pydantic = "*"
 termcolor = "*"
 fastapi = "*"
+pandas = "*"
 
 [dev-packages]
 devtools = "*"
