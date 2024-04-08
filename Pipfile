@@ -10,6 +10,7 @@ cloud-sql-python-connector = {extras = ["pymysql"], version = "*"}
 mysql-connector-python = "*"
 pydantic = "*"
 termcolor = "*"
+fastapi = "*"
 
 [dev-packages]
 devtools = "*"
