@@ -264,6 +264,23 @@ CREATE TABLE ContainTracks (
 ## Data Insertion Results
 ![Data insertion](assets/db_setup/countquery_result.png)
 
+## Four Advanced Query Results
+
+This query returns the top 5 rated albums within a specific genre, using joins, aggregation, and sub queries.
+![image](https://github.com/cs411-alawini/sp24-cs411-team003-DROPDATABASE/assets/92749562/4b2db064-c7f3-42d7-94de-c0f31dd21628)
+
+This query finds albums by artists that a user has highly rated but hasn't rated yet, using joins and sub queries. It assumes a user rates an album they like.
+
+![image (1)](https://github.com/cs411-alawini/sp24-cs411-team003-DROPDATABASE/assets/92749562/25a934ed-c843-4198-919c-596c7af96c12)
+
+
+This query aggregates data to find the most popular tracks across all genres, based on the average rating using joins and group by.
+
+![image (2)](https://github.com/cs411-alawini/sp24-cs411-team003-DROPDATABASE/assets/92749562/4a4613ae-d1d3-4334-b54e-7c0380cfe49b)
+
+This query recommends new music (albums) to a user based on the albums rated highly by the users they follow, employing joins and sub queries.
+
+![image (3)](https://github.com/cs411-alawini/sp24-cs411-team003-DROPDATABASE/assets/92749562/6f0b5ce5-e367-43ff-b7b4-a467b9dc12ab)
 
 ## Indexing Analysis
 ### Advanced Query #1: get_top5_album_by_genre
