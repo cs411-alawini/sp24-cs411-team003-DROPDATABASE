@@ -110,3 +110,113 @@ To translate the SQL schema into a logical design document, we will outline the 
 - ON DELETE CASCADE constraints are applied to maintain integrity, automatically removing dependent records to prevent orphan records.
 
 This logical design document serves as a detailed blueprint of the database structure, outlining how entities are related and interact within the system. It emphasizes the relational model's strength in representing complex relationships and enforcing data integrity.
+
+## Relational Schema
+
+Here, we cover the relational schema of our conceptual design:
+
+**Artist**
+
+Artist(ArtistID: INT [PK] ArtistName: VARCHAR(32))
+
+**Album**
+
+Album(AlbumID: INT [PK], AlbumTitle: VARCHAR(32), ReleaseDate: DATETIME)
+
+**Track**
+
+Track(TrackID: INT [PK], TrackName: VARCHAR(128), AlbumID: INT [FK to Album.AlbumID])
+
+**User**
+
+User(UserID: INT [PK], UserName: VARCHAR(32), Password: VARCHAR(32))
+
+**PlayList**
+
+PlayList(PlayListID: INT [PK], PlayListName: VARCHAR(32), UserID: INT [FK to User.UserID])
+
+**Genre**
+
+Genre(GenreName: VARCHAR(32) [PK])
+
+**ArtistAlbum**
+
+ArtistAlbum(ArtistID: INT [FK to Artist.ArtistID], AlbumID: INT [FK to Album.AlbumID])
+
+**AlbumGenre**
+
+AlbumGenre(AlbumID: INT [FK to Album.AlbumID], GenreName: VARCHAR(32) [FK to Genre.GenreName])
+
+**RateTrack**
+
+RateTrack(UserID: INT [FK to User.UserID], TrackID: INT [FK to Track.TrackID], Rating: INT)
+
+**RateAlbum**
+
+RateAlbum(UserID: INT [FK to User.UserID], AlbumID: INT [FK to Album.AlbumID], Rating: INT)
+
+**UserFollow**
+
+UserFollow(UserID: INT [FK to User.UserID], FollowID: INT [FK to User.UserID])
+
+**ContainTracks**
+
+ContainTracks(PlayListID: INT [FK to PlayList.PlayListID], TrackID: INT [FK to Track.TrackID])
+
+## Indexing Analysis
+### Advanced Query #1: get_top5_album_by_genre
+#### No index added:
+![No index added](assets/index_analysis/index1.1.png)
+
+#### Index added on RateTrack(Rating):
+![Index added on RateTrack(Rating)](assets/index1.2.png)
+
+
+#### Analysis:
+Of the attributes in our get top 5 albums query, the RateTrack.Rating attribute was the only non-primary key, so we tried adding an index and using the EXPLAIN ANALYZE command. We discovered that the costs for both were basically the same. It’s hard to know exactly what the reason is for this, but it is possible that this is due to the fact that the ‘Rating’ column has only a couple of discrete values (1-5). This means that the column has low selectivity, which decreases the effectiveness of adding an index. Due to the fact that this change did not improve our cost, we decided to remove it and stick with our original index design.  
+
+### Advanced Query #2: get_user_recommendations_by_artist
+#### No index added (default):
+![No index added](assets/index_analysis/index2.1.png)
+
+
+#### Index added on Album.AlbumTitle
+![Index added on Album.AlbumTitle](assets/index_analysis/index2.2.png)
+
+
+#### Index added on Artist.ArtistName
+![Index added on Artist.ArtistName](assets/index_analysis/index2.3.png)
+
+
+#### Index added on RateAlbum.Rating
+![Index added on RateAlbum.Rating](assets/index_analysis/index2.4.png)
+
+
+#### Analysis:
+We tried three different configurations (plus the default): index on Album.AlbumTitle, index on Artist.ArtistName, and index on RateAlbum.Rating. We selected these attributes because all three were not primary keys. Additionally, RateAlbum.Rating is part of a WHERE clause, which is optimal for indexing.  We found that the cost was essentially the same for the default configuration and Album.AlbumTitle indexes. The cost was worse for indexes on Artist.ArtistName and RateAlbum.Rating. Both Album.AlbumTitle and Artist.ArtistName are not included in any JOIN attributes or WHERE, GROUP BY, or HAVING clauses, so it makes sense that they do not have a positive impact on the cost. We only tried these attributes for thoroughness. Additionally, RateAlbum.Rating may see poor results because the rating is a discrete number between 1 and 5, which means it has low selectivity and will not make a great attribute to index. Because of these results, we decided to stick with the default configuration.
+
+### Advanced Query #3: get_most_popular_tracks
+#### No index added (default):
+![No index added (default)](assets/index_analysis/index3.1.png)
+
+
+#### Index added on RateTrack.Rating
+![Index added on RateTrack.Rating](assets/index_analysis/index2.4.png)
+
+
+#### Analysis:
+We tried one other index configuration, adding an index to RateTrack.Rating, plus the default configuration. We selected RateTrack.Rating because it is not a primary key. It is not a part of a JOIN attribute or WHERE, GROUP BY, or HAVING clauses, but we still tried anyway to see if we could see any marginal improvement as there were not any other non-primary keys that were part of this query. We did end up determining that there was a marginal improvement in cost for the configuration with an index added for RateTrack.Rating. We saw a marginal improvement in the cost of almost every aspect of this query (nested loop inner joins, filter, single-row index lookup, covering index lookup). Altogether, this meant that we saw a pretty substantial improvement in our overall cost estimation, especially since some lines that were looped many times had improved cost. Due to these results, we have decided to add an index to RateTrack.Rating.
+
+### Advanced Query #4: get_recommend_album_by_follow
+#### No index added (default):
+![No index added (default)](assets/index_analysis/index4.1.png)
+
+
+#### Index added on RateAlbum.Rating
+![Index added on RateAlbum.Rating](assets/index_analysis/index4.1.png)
+
+
+#### Analysis:
+We tried one other index configuration with RateAlbum.Rating. This is because it is not a primary key, so we could potentially see some improvement. We saw a decrease in the cost on many parts of the query (nested loop inner join, filter, index lookup), and a slight improvement on the single-row index lookup. We previously theorized that this attribute might be seeing bad results when it is an index due to low selectivity, and this could be true here as well. Due to this, we decided to go with the original indexing, since overall we were getting a worse cost.
+
+
