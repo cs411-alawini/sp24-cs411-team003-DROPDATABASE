@@ -319,7 +319,7 @@ CREATE TABLE ContainTracks (
 ![No index added](assets/index_analysis/index1.1.png)
 
 #### Index added on RateTrack(Rating):
-![Index added on RateTrack(Rating)](assets/analysis/index1.2.png)
+![Index added on RateTrack(Rating)](assets/index_analysis/index1.2.png)
 
 
 #### Analysis:
