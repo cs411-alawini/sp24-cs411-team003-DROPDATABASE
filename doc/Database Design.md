@@ -164,6 +164,11 @@ UserFollow(UserID: INT [FK to User.UserID], FollowID: INT [FK to User.UserID])
 
 ContainTracks(PlayListID: INT [FK to PlayList.PlayListID], TrackID: INT [FK to Track.TrackID])
 
+## Proof of Connection:
+
+![Screenshot 2024-04-08 215941](https://github.com/cs411-alawini/sp24-cs411-team003-DROPDATABASE/assets/92749562/7fc89b51-5e38-4008-8eaf-4f2208f28fc7)
+
+
 ## DDL Commands
 CREATE TABLE Artist (
     ArtistID INTEGER AUTO_INCREMENT,
