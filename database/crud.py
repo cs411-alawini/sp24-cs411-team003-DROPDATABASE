@@ -68,8 +68,8 @@ def get_most_popular_tracks() -> PopularTracksResponse:
 
 
 @err_handler
-def get_recommend_album_by_follow(user_id: int) -> AlbumRecommendationList:
-    # This query recommends new music (albums) to a user based on the albums rated highly by the users they follow,
+def get_recommend_album_by_follow(user_id: int) -> list[AlbumRating]:
+    # This query recommends new music (albums) to a user based on the albums rated by the users they follow,
     # employing joins and sub queries.
 
     sql = '''
@@ -79,12 +79,11 @@ def get_recommend_album_by_follow(user_id: int) -> AlbumRecommendationList:
         WHERE ra.UserID IN (
             SELECT FollowID FROM UserFollow WHERE UserID = %s
         )
-        AND ra.Rating >= 4 -- Albums that are highly rated by followings
         GROUP BY ra.AlbumID
-        HAVING COUNT(ra.UserID) > 1 -- Recommended if more than one followed user rates it highly
         ORDER BY AvgRating DESC, COUNT(ra.UserID) DESC
         LIMIT 10;
     '''
 
     rows = sql_cur.execute(sql, (user_id,))
-    return AlbumRecommendationList(recommendations=rows)
+    print(rows)
+    return rows
