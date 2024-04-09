@@ -110,3 +110,56 @@ To translate the SQL schema into a logical design document, we will outline the 
 - ON DELETE CASCADE constraints are applied to maintain integrity, automatically removing dependent records to prevent orphan records.
 
 This logical design document serves as a detailed blueprint of the database structure, outlining how entities are related and interact within the system. It emphasizes the relational model's strength in representing complex relationships and enforcing data integrity.
+
+## Relational Schema
+
+Here, we cover the relational schema of our conceptual design:
+
+**Artist**
+
+Artist(ArtistID: INT [PK] ArtistName: VARCHAR(32))
+
+**Album**
+
+Album(AlbumID: INT [PK], AlbumTitle: VARCHAR(32), ReleaseDate: DATETIME)
+
+**Track**
+
+Track(TrackID: INT [PK], TrackName: VARCHAR(128), AlbumID: INT [FK to Album.AlbumID])
+
+**User**
+
+User(UserID: INT [PK], UserName: VARCHAR(32), Password: VARCHAR(32))
+
+**PlayList**
+
+PlayList(PlayListID: INT [PK], PlayListName: VARCHAR(32), UserID: INT [FK to User.UserID])
+
+**Genre**
+
+Genre(GenreName: VARCHAR(32) [PK])
+
+**ArtistAlbum**
+
+ArtistAlbum(ArtistID: INT [FK to Artist.ArtistID], AlbumID: INT [FK to Album.AlbumID])
+
+**AlbumGenre**
+
+AlbumGenre(AlbumID: INT [FK to Album.AlbumID], GenreName: VARCHAR(32) [FK to Genre.GenreName])
+
+**RateTrack**
+
+RateTrack(UserID: INT [FK to User.UserID], TrackID: INT [FK to Track.TrackID], Rating: INT)
+
+**RateAlbum**
+
+RateAlbum(UserID: INT [FK to User.UserID], AlbumID: INT [FK to Album.AlbumID], Rating: INT)
+
+**UserFollow**
+
+UserFollow(UserID: INT [FK to User.UserID], FollowID: INT [FK to User.UserID])
+
+**ContainTracks**
+
+ContainTracks(PlayListID: INT [FK to PlayList.PlayListID], TrackID: INT [FK to Track.TrackID])
+
