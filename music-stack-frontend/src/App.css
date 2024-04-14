@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+}
+
+.logo {
+  width: 100px;
+}
+
+.navigation a {
+  color: white;
+  text-decoration: none;
+  margin-left: 1rem;
+}
+
+.search-bar {
+  margin: 2rem;
+}
+
+.search-bar form {
+  display: flex;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  padding: 0.5rem;
+}
+
+.search-bar button {
+  padding: 0.5rem;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
+}
