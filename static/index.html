@@ -1,45 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cmn-Hans">
+
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MusicStack</title>
-    <link rel="stylesheet" href="./style.css">
+    <meta name="description" content="TwinIsland's Blog">
+    <meta name="author" content="TwinIsland">
+
+    <title>SuikaSPA Template</title>
+    <link rel="icon" href="/img/favicon.png">
+
+    <link rel="stylesheet" href="/css/picnic.min.css" type="text/css" />
+    <link rel="stylesheet" href="/css/style.css" type="text/css" />
+    <script defer src="/js/suika.js"></script>
+
 </head>
+
 <body>
-    <header>
-        <div class="logo">MusicStack</div>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#discover">Discover</a></li>
-                <li><a href="#rate">Rate Music</a></li>
-                <li><a href="#recommendations">Recommendations</a></li>
-                <li><a href="#profile">My Profile</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section class="hero">
-        <h1>Discover. Rate. Unite.</h1>
-        <p>Your music journey starts here.</p>
-        <a href="#discover" class="cta">Explore Now</a>
-    </section>
-    <section class="features">
-        <div class="feature">
-            <h3>Rate Your Music</h3>
-            <p>Provide personalized music reviews by rating albums and tracks.</p>
-        </div>
-        <div class="feature">
-            <h3>Discover Music</h3>
-            <p>Explore and uncover music that resonates with you.</p>
-        </div>
-        <div class="feature">
-            <h3>Music Recommendations</h3>
-            <p>Personalized recommendations tailored to your music taste.</p>
-        </div>
-    </section>
-    <footer>
-        <p>&copy; 2024 MusicStack. All rights reserved.</p>
+    <div class="container">
+        <div id="page-content"></div>
+    </div>
+
+    <footer class="footer">
+        <p>Footer</p>
     </footer>
+
+
+    <a tabindex="-1" class="top pseudo button" id="go">
+        ▲Up you go▲
+    </a>
+
+    <!-- router register -->
+    <script async src="/js/router.js"></script>
+
+    <script>
+        document.addEventListener('scroll', function () {
+            var top = window.scrollY || document.documentElement.scrollTop;
+            var backToTopButton = document.querySelector('#go');
+
+            if (top > 800) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+
+        document.getElementById('go').addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
+
 </html>
