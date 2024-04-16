@@ -19,3 +19,6 @@ install:
 
 run: install
 	@pipenv run uvicorn main:app
+
+dev:
+	@pipenv run uvicorn main:app --reload

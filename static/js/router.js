@@ -6,8 +6,9 @@ const route = (event) => {
 };
 
 const routes = {
-    404: { html: "/pages/404.html", js: null, css: [], jsr: [] },
-    "/": { html: "/pages/index.html", js: "/js/index.js", css: [], jsr: [] },
+    404: {html: "/pages/404.html", js: null, css: [], jsr: []},
+    "/": {html: "/pages/index.html", js: "/js/index.js", css: [], jsr: []},
+    "/search": {html: "/pages/search.html", js: null, css: [], jsr: []}
 };
 
 const loadedCSS = {};
@@ -79,7 +80,7 @@ const handleLocation = async () => {
 
 function navigateTo(page) {
     window.history.pushState({}, '', page);
-    handleLocation(); 
+    handleLocation();
 }
 
 handleLocation();
