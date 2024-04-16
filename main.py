@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 import os
 
@@ -47,3 +48,8 @@ async def index():
 
     """
     return FileResponse("index.html")
+
+@app.exception_handler(404)
+async def custom_404_handler(_, __):
+    return RedirectResponse("/index.html")
+
