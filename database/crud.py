@@ -4,6 +4,46 @@ from utils import LocalSQL, err_handler
 sql_cur = LocalSQL()
 
 
+def get_index_data(top_n: int) -> IndexData:
+    # return the data for rendering index page
+    sql_albums = f'''
+        SELECT a.AlbumID, a.AlbumTitle
+        FROM Album a
+        JOIN RateAlbum ra ON a.AlbumID = ra.AlbumID
+        GROUP BY a.AlbumID
+        ORDER BY AVG(ra.Rating) DESC
+        LIMIT %s
+    '''
+
+    top_albums = sql_cur.execute(sql_albums, (top_n,))
+
+    sql = f'''
+        SELECT 
+            Artist.ArtistID,
+            Artist.ArtistName
+        FROM Artist
+        JOIN ArtistAlbum ON Artist.ArtistID = ArtistAlbum.ArtistID
+        JOIN Album ON ArtistAlbum.AlbumID = Album.AlbumID
+        JOIN Track ON Album.AlbumID = Track.AlbumID
+        JOIN RateTrack ON Track.TrackID = RateTrack.TrackID
+        GROUP BY Artist.ArtistID, Artist.ArtistName
+        ORDER BY AVG(RateTrack.Rating) DESC
+        LIMIT %s;
+    '''
+
+    top_artists = sql_cur.execute(sql, (top_n,))
+
+    print(top_albums)
+    print(top_artists)
+
+    album_covers = [AlbumCover(AlbumID=album['AlbumID'], AlbumTitle=album['AlbumTitle']) for album in top_albums]
+    artist_covers = [ArtistCover(ArtistID=artist['ArtistID'], ArtistName=artist['ArtistName']) for artist in
+                     top_artists]
+
+    return IndexData(TopAlbum=album_covers,
+                     TopArtists=artist_covers)
+
+
 @err_handler
 def get_top5_album_by_genre(genre: str) -> list[AlbumRating]:
     # This query returns the top 5 rated albums within a specific genre, using joins, aggregation, and sub queries.

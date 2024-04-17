@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, HttpUrl
+from typing import List, Optional
 
 
 class AlbumRating(BaseModel):
@@ -25,3 +25,18 @@ class PopularTracksResponse(BaseModel):
     tracks: List[TrackRating]
 
 
+class AlbumCover(BaseModel):
+    AlbumID: int
+    AlbumTitle: str
+    AlbumCover: Optional[HttpUrl] = "https://api.cirno.me/anipic/"
+
+
+class ArtistCover(BaseModel):
+    ArtistID: int
+    ArtistName: str
+    ArtistCover: Optional[HttpUrl] = "https://api.cirno.me/anipic/"
+
+
+class IndexData(BaseModel):
+    TopAlbum: List[AlbumCover]
+    TopArtists: List[ArtistCover]
