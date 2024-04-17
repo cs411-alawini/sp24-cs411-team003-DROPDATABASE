@@ -6,12 +6,14 @@ body {
   }
   
   /* Styles for the header and search bar */
-  .header .navbar {
-    padding: 0.5rem 1rem; /* Adjust the padding to your preference */
+  .navbar {
+    width: 100%;
+    max-width: 100%;
   }
   
-  .header .navbar-brand {
-    margin-right: 2rem; 
+  .navbar-brand {
+    max-height: 50px; /* Adjust as necessary */
+    overflow: hidden;
   }
   
   .header .navbar-collapse {
@@ -27,11 +29,11 @@ body {
     margin-left: 1rem; /* Space between nav items */
   }
   
-  .header .navbar .form-control {
-    min-width: 300px; /* Adjust this value to set the desired length of the search bar */
-  }
+  .navbar .form-control {
+  width: auto; /* Change from fixed width to auto */
+  flex-grow: 1; /* Allows the search bar to grow as needed */
+}
   
-  /* You can adjust the margin to position the search bar exactly where you want it */
   .header .navbar .d-flex {
     flex-grow: 1;
     justify-content: center;
