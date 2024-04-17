@@ -6,6 +6,9 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from database.crud import *
+from database.models import *
+
 app = FastAPI(
     title="MusicStack",
     description="advance music rating platform",
@@ -23,8 +26,16 @@ app.add_middleware(
 
 # app.include_router(blog.router, prefix="/blog", tags=["blog"])
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
+
+@app.get('/api/index/{top_n}')
+async def get_index_data(top_n: int) -> IndexData:
+    return get_index_data(top_n)
+
 
 @app.exception_handler(404)
 async def custom_404_handler(_, __):
     return FileResponse("static/index.html")
+
+
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
