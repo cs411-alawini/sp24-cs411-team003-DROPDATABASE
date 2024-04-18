@@ -19,9 +19,17 @@ initialize the database structure by running
 - fill `[local_sql]` section with information about your database 
 - Secondly, save and run the `push_data.py` in utils file
 
+## Start backend
+```bash
+make dev
+```
+if `make dev` doesn't work, use `make` instead. 
 
+After backend start, you can view the website in `localhost:8000`
 
-## Python SQL Connector
+# Developing
+
+###  Python SQL Connector
 
 Currently support Google Cloud SQL connector and Local SQL connector
 
