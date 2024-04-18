@@ -28,6 +28,7 @@ class PopularTracksResponse(BaseModel):
 class AlbumCover(BaseModel):
     AlbumID: int
     AlbumTitle: str
+    ArtistName: str
     AlbumCover: Optional[HttpUrl] = "https://api.cirno.me/anipic/"
 
 

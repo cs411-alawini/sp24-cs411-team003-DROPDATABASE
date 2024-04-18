@@ -3,47 +3,47 @@
 /* Ensure the header is not obstructed by the fixed navbar */
 body {
     padding-top: 70px; /* Adjust this value based on your navbar's height */
-  }
-  
-  /* Styles for the header and search bar */
-  .navbar {
+}
+
+/* Styles for the header and search bar */
+.navbar {
     width: 100%;
     max-width: 100%;
-  }
-  
-  .navbar-brand {
+}
+
+.navbar-brand {
     max-height: 50px; /* Adjust as necessary */
     overflow: hidden;
-  }
-  
-  .header .navbar-collapse {
+}
+
+.header .navbar-collapse {
     align-items: center;
-  }
-  
-  .header .navbar-nav {
+}
+
+.header .navbar-nav {
     flex-direction: row;
     margin-right: auto; /* Pushes the search to the middle */
-  }
-  
-  .header .nav-item {
-    margin-left: 1rem; /* Space between nav items */
-  }
-  
-  .navbar .form-control {
-  width: auto; /* Change from fixed width to auto */
-  flex-grow: 1; /* Allows the search bar to grow as needed */
 }
-  
-  .header .navbar .d-flex {
+
+.header .nav-item {
+    margin-left: 1rem; /* Space between nav items */
+}
+
+.navbar .form-control {
+    width: auto; /* Change from fixed width to auto */
+    flex-grow: 1; /* Allows the search bar to grow as needed */
+}
+
+.header .navbar .d-flex {
     flex-grow: 1;
     justify-content: center;
-  }
-  
-  /* Styles for the button to align properly with the search bar */
-  .header .navbar .btn {
+}
+
+/* Styles for the button to align properly with the search bar */
+.header .navbar .btn {
     margin-left: 0.5rem; /* Space between the search bar and the button */
-  }
-  
+}
+
 
 html {
     scrollbar-gutter: stable both-edges;
@@ -130,107 +130,114 @@ html {
 .mixes-section h2 {
     font-size: 1.5em;
     margin-bottom: 1rem;
-  }
-  
-  .mixes-section .row {
+}
+
+.mixes-section .row {
     margin-bottom: 1rem;
-  }
-  
-  .mixes-section .card {
+}
+
+.mixes-section .card {
     margin-bottom: 1rem;
-  }
-  
-  .mixes-section .card-img-top {
+}
+
+.mixes-section .card-img-top {
     width: 100%;
     height: auto;
     object-fit: cover;
-  }
-  
-  .mixes-section .card-title {
+}
+
+.mixes-section .card-title {
     font-size: 1.2em;
     font-weight: bold;
-  }
-  
-  .mixes-section .card-text {
+}
+
+.mixes-section .card-text {
     font-size: 0.9em;
-  }
-  
-  .show-all {
+}
+
+.show-all {
     font-weight: bold;
     color: #1DB954; /* Spotify green color */
     text-decoration: none;
-  }
-  
-  /* Extra small devices (portrait phones, less than 576px) */
-  @media (max-width: 575.98px) {
-    .mixes-section .col-md-4 {
-      flex: 0 0 100%;
-      max-width: 100%;
-    }
-  }
-  
-  /* Small devices (landscape phones, 576px and up) */
-  @media (min-width: 576px) and (max-width: 767.98px) {
-    .mixes-section .col-md-4 {
-      flex: 0 0 50%;
-      max-width: 50%;
-    }
-  }
-  
-  /* Medium devices (tablets, 768px and up) */
-  @media (min-width: 768px) {
-    .mixes-section .col-md-4 {
-      flex: 0 0 33.33333%;
-      max-width: 33.33333%;
-    }
-  }
+}
 
-  
-  /* style.css for top artists */
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .mixes-section .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .mixes-section .col-md-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .mixes-section .col-md-4 {
+        flex: 0 0 33.33333%;
+        max-width: 33.33333%;
+    }
+}
+
+
+/* style.css for top artists */
 
 .top-artists-section h2 {
     font-size: 1.5em;
     margin-bottom: 1rem;
-  }
-  
-  .artists-scrolling-wrapper {
+}
+
+.artists-scrolling-wrapper {
     display: flex;
     overflow-x: auto;
     gap: 1rem;
     padding-bottom: 1rem;
-  }
-  
-  .artist-card {
+}
+
+.artist-card {
     min-width: 160px; /* Set a minimum width for each artist card */
     flex-shrink: 0; /* Prevent the card from shrinking smaller than its content */
     text-align: center;
-  }
-  
-  .artist-card img {
+}
+
+.artist-card img {
     width: 160px; /* Set a fixed width */
     height: 160px; /* Set a fixed height to make it square */
     object-fit: cover; /* Ensures the image covers the area, cropping if necessary */
     border-radius: 8px;
-  }
-  
-  .artist-info {
+}
+
+.artist-info {
     background-color: #000; /* Adjust background color as needed */
     color: #fff; /* Adjust text color as needed */
     padding: 0.5rem;
-  }
-  
-  .artist-info h3 {
+}
+
+.artist-info h3 {
     margin-top: 0.5rem;
     font-size: 1em; /* Adjust font size as needed */
-  }
-  
-  /* Optional: Hide scrollbar for aesthetic purposes */
-  .artists-scrolling-wrapper::-webkit-scrollbar {
+}
+
+/* Optional: Hide scrollbar for aesthetic purposes */
+.artists-scrolling-wrapper::-webkit-scrollbar {
     display: none;
-  }
-  
-  .artists-scrolling-wrapper {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
-  
+}
+
+.artists-scrolling-wrapper {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+a {
+    text-decoration: none;
+}
+
+h5.card-title {
+    color: black;
+}

@@ -7,10 +7,12 @@ sql_cur = LocalSQL()
 def get_index_data(top_n: int) -> IndexData:
     # return the data for rendering index page
     sql_albums = f'''
-        SELECT a.AlbumID, a.AlbumTitle
+        SELECT a.AlbumID, a.AlbumTitle, ar.ArtistName
         FROM Album a
         JOIN RateAlbum ra ON a.AlbumID = ra.AlbumID
-        GROUP BY a.AlbumID
+        JOIN artistalbum a2 ON a.AlbumID = a2.AlbumID
+        JOIN artist ar ON a2.ArtistID = ar.ArtistID
+        GROUP BY a.AlbumID, a.AlbumTitle, ar.ArtistName
         ORDER BY AVG(ra.Rating) DESC
         LIMIT %s
     '''
@@ -36,7 +38,8 @@ def get_index_data(top_n: int) -> IndexData:
     print(top_albums)
     print(top_artists)
 
-    album_covers = [AlbumCover(AlbumID=album['AlbumID'], AlbumTitle=album['AlbumTitle']) for album in top_albums]
+    album_covers = [AlbumCover(AlbumID=album['AlbumID'], AlbumTitle=album['AlbumTitle'], ArtistName=album['ArtistName'])
+                    for album in top_albums]
     artist_covers = [ArtistCover(ArtistID=artist['ArtistID'], ArtistName=artist['ArtistName']) for artist in
                      top_artists]
 

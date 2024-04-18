@@ -35,7 +35,7 @@ function trend_album_render(AlbumInfo) {
           <a href="/album/${AlbumInfo[n - 1]['AlbumID']}">
           <div class="card-body">
             <h5 class="card-title">${AlbumInfo[n - 1]['AlbumTitle']}</h5>
-            <p class="card-text">${AlbumInfo[n - 1]['AlbumTitle']}</p>
+            <p class="card-text">${AlbumInfo[n - 1]['ArtistName']}</p>
           </div>
           </a>
         </div>
