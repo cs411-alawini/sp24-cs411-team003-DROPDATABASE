@@ -1,9 +1,3 @@
-/*
-    The module to rendering the index page
-    block when loading html
-
-*/
-
 function trend_artist_render(ArtistInfo) {
     let content = '';
     content += ''
@@ -24,29 +18,6 @@ function trend_artist_render(ArtistInfo) {
     return content;
 }
 
-function trend_album_render(AlbumInfo) {
-    let content = '';
-    for (let n = 1; n <= 4; n++) {
-        // Append HTML for each artist card with dynamic image and album info
-        content += `
-      <div class="col-md-3 col-sm-6">
-        <div class="card">
-          <img src="/static/img/card${n}.jpeg" class="card-img-top" alt="Baby Gravy Mix">
-          <a href="/album/${AlbumInfo[n - 1]['AlbumID']}">
-          <div class="card-body">
-            <h5 class="card-title">${AlbumInfo[n - 1]['AlbumTitle']}</h5>
-            <p class="card-text">${AlbumInfo[n - 1]['ArtistName']}</p>
-          </div>
-          </a>
-        </div>
-      </div>
-    `;
-    }
-
-    return content;
-}
-
-// END RENDERING HELPERS
 fetchDataWithCache('http://localhost:8000/api/index/10', "index")
     .then(data => {
         const renderPromises = [

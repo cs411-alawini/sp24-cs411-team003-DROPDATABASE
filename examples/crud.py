@@ -10,3 +10,7 @@ pprint(get_recommend_album_by_follow(400))
 pprint(get_user_recommendations_by_artist(349))
 
 pprint(get_index_data(10))
+
+pprint(get_userinfo("beckmercedes"))
+
+pprint(search_album("aa"))

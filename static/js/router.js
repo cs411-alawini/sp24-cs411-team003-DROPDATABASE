@@ -8,7 +8,8 @@ const route = (event) => {
 const routes = {
     404: {html: "/static/pages/404.html", js: null, css: [], jsr: []},
     "/": {html: "/static/pages/index.html", js: "/static/js/index.js", css: [], jsr: []},
-    "/search": {html: "/static/pages/search.html", js: null, css: [], jsr: []}
+    "/search": {html: "/static/pages/search.html", js: null, css: [], jsr: []},
+    "/login": {html: "/static/pages/login.html", js: null, css: [], jsr: ['/static/js/login.js']}
 };
 
 const loadedCSS = {};

@@ -41,3 +41,15 @@ class ArtistCover(BaseModel):
 class IndexData(BaseModel):
     TopAlbum: List[AlbumCover]
     TopArtists: List[ArtistCover]
+
+
+class Message(BaseModel):
+    flag: bool
+    content: Optional[str]
+    msg: Optional[str]
+
+
+class UserInfo(BaseModel):
+    UserID: int
+    UserName: str
+    Password: str

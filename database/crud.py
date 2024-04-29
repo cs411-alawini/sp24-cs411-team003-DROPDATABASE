@@ -128,5 +128,43 @@ def get_recommend_album_by_follow(user_id: int) -> list[AlbumRating]:
     '''
 
     rows = sql_cur.execute(sql, (user_id,))
-    print(rows)
+    return rows
+
+
+@err_handler
+def get_userinfo(user_name: str) -> Optional[UserInfo]:
+    sql = '''
+    SELECT *
+        FROM User
+        WHERE UserName = %s;
+    '''
+
+    rows = sql_cur.execute(sql, (user_name,))
+    if len(rows) == 0:
+        return None
+
+    return UserInfo(
+        UserID=rows[0]['UserID'],
+        UserName=rows[0]['UserName'],
+        Password=rows[0]['Password']
+    )
+
+
+@err_handler
+def search_album(query: str) -> List[AlbumCover]:
+    sql = '''
+    SELECT * FROM Album a
+    JOIN artistalbum a2 ON a.AlbumID = a2.AlbumID
+    JOIN artist ar ON a2.ArtistID = ar.ArtistID
+
+    WHERE AlbumTitle LIKE %s
+    LIMIT 20;
+    '''
+    search_pattern = f'%{query}%'
+
+    rows = sql_cur.execute(sql, (search_pattern,))
+
+    album_covers = [AlbumCover(AlbumID=album['AlbumID'], AlbumTitle=album['AlbumTitle'], ArtistName=album['ArtistName'])
+                    for album in rows]
+
     return rows
