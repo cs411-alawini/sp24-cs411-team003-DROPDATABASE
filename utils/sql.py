@@ -95,6 +95,16 @@ class LocalSQL:
         except mysql.connector.Error as err:
             raise err
 
+    def callproc(self, query, params=None):
+        if self.__cursor is None:
+            print("Attempted to execute a query without a database connection.")
+            return None
+        try:
+            self.__cursor.callproc(query, params or ())
+            return self.__cursor.fetchall()
+        except mysql.connector.Error as err:
+            raise err
+
     def commit(self):
         if self.__connection:
             self.__connection.commit()

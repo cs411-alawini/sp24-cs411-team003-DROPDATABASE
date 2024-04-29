@@ -167,4 +167,32 @@ def search_album(query: str) -> List[AlbumCover]:
     album_covers = [AlbumCover(AlbumID=album['AlbumID'], AlbumTitle=album['AlbumTitle'], ArtistName=album['ArtistName'])
                     for album in rows]
 
-    return rows
+    return album_covers
+
+
+@err_handler
+def rateAlbum(user_id: int, album_id: int, rating: int):
+    try:
+        # Call the rateAlbum stored procedure with the provided parameters
+        sql_cur.callproc("rateAlbum", (user_id, album_id, rating,))
+        # Commit the transaction
+        sql_cur.commit()
+    except Exception as e:
+        # Rollback transaction in case of an error
+        sql_cur.rollback()
+        raise e
+
+
+
+@err_handler
+def get_rate_by_userid(user_id: int) -> List[UserAlbumRate]:
+    sql = '''
+        SELECT RateAlbum.AlbumID, Album.AlbumTitle, RateAlbum.Rating
+        FROM RateAlbum
+        JOIN Album ON RateAlbum.AlbumID = Album.AlbumID
+        WHERE RateAlbum.UserID = %s;
+    '''
+
+    rows = sql_cur.execute(sql, (user_id, ))
+
+    return [UserAlbumRate(AlbumID=i['AlbumID'], AlbumTitle=i['AlbumTitle'], Rating=i['Rating']) for i in rows]

@@ -53,3 +53,9 @@ class UserInfo(BaseModel):
     UserID: int
     UserName: str
     Password: str
+
+
+class UserAlbumRate(BaseModel):
+    AlbumID: int
+    AlbumTitle: str
+    Rating: int

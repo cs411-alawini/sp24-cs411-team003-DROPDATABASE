@@ -14,3 +14,11 @@ pprint(get_index_data(10))
 pprint(get_userinfo("beckmercedes"))
 
 pprint(search_album("aa"))
+
+
+rateAlbum(user_id=1,
+          album_id=1,
+          rating=4)
+
+
+pprint(get_rate_by_userid(1))
