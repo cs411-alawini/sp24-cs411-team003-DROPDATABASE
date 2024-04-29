@@ -15,6 +15,17 @@ BEGIN
     END IF;
 END;
 
+CREATE TRIGGER round_rating_up
+BEFORE UPDATE ON RateTrack
+FOR EACH ROW
+BEGIN
+    IF NEW.Rating > 5 THEN
+        SET NEW.Rating = 5;
+    ELSEIF NEW.Rating < 1 THEN
+        SET NEW.Rating = 1;
+    END IF;
+END;
+
 CREATE TRIGGER round_rating_album
 BEFORE INSERT ON RateAlbum
 FOR EACH ROW
@@ -25,6 +36,18 @@ BEGIN
         SET NEW.Rating = 1;
     END IF;
 END;
+
+CREATE TRIGGER round_rating_album_up
+BEFORE UPDATE ON RateAlbum
+FOR EACH ROW
+BEGIN
+    IF NEW.Rating > 5 THEN
+        SET NEW.Rating = 5;
+    ELSEIF NEW.Rating < 1 THEN
+        SET NEW.Rating = 1;
+    END IF;
+END;
+
 
 # CALL AddAlbum('New Album', 1, NOW());
 
