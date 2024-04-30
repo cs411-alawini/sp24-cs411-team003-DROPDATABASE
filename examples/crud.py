@@ -22,3 +22,5 @@ pprint(get_follower_by_userid(1))
 pprint(get_following_by_userid(1))
 
 pprint(get_user_playlist(1))
+
+pprint(get_recommendation_by_userid(1))

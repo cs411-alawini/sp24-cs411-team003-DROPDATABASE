@@ -170,7 +170,7 @@ def search_album(query: str) -> List[AlbumCover]:
 
 
 @err_handler
-def rateAlbum(user_id: int, album_id: int, rating: int):
+def rate_album(user_id: int, album_id: int, rating: int):
     try:
         # Call the rateAlbum stored procedure with the provided parameters
         sql_cur.callproc("rateAlbum", (user_id, album_id, rating,))
@@ -208,7 +208,6 @@ def get_follower_by_userid(user_id: int) -> List[str]:
     return [row['UserName'] for row in rows]
 
 
-
 @err_handler
 def get_following_by_userid(user_id: int) -> List[str]:
     sql = '''
@@ -219,6 +218,7 @@ def get_following_by_userid(user_id: int) -> List[str]:
     '''
     rows = sql_cur.execute(sql, (user_id,))
     return [row['UserName'] for row in rows]
+
 
 @err_handler
 def follow_userid(follower_id: int, followee_id: int) -> None:
@@ -247,7 +247,6 @@ def follow_userid(follower_id: int, followee_id: int) -> None:
         raise Exception(f"User with UserID {followee_id} does not exist.")
 
 
-
 @err_handler
 def unfollow_userid(follower_id: int, followee_id: int) -> None:
     sql = '''
@@ -271,3 +270,26 @@ def get_user_playlist(user_id: int) -> List[str]:
     '''
     rows = sql_cur.execute(sql, (user_id,))
     return [row['PlayListName'] for row in rows]
+
+
+@err_handler
+def get_recommendation_by_userid(user_id: int) -> AlbumRecommendationList:
+    """
+    TODO: Refactor the initial implementation of the recommendation system.
+    Currently, the code fetches random albums. Update it to generate personalized recommendations
+    based on user_id.
+
+    Also, I write a testcase in example/crud.py. run it to ensure bug free
+
+    """
+    sql = '''
+    SELECT DISTINCT a.AlbumTitle, ar.ArtistName
+    FROM ArtistAlbum aa
+    JOIN Album a ON aa.AlbumID = a.AlbumID
+    JOIN Artist ar ON aa.ArtistID = ar.ArtistID
+    
+    LIMIT 5
+    '''
+
+    rows = sql_cur.execute(sql, ())
+    return AlbumRecommendationList(recommendations=rows)
