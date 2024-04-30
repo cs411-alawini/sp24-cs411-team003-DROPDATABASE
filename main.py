@@ -4,8 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from database.crud import get_index_data, get_userinfo, search_album, get_follower_by_userid, get_following_by_userid, \
-    get_user_playlist, unfollow_userid, get_user_playlist
-from database.models import IndexData, Message, AlbumCover
+    get_user_playlist, unfollow_userid, get_user_playlist, get_album_details_by_id
+from database.models import IndexData, Message, AlbumCover, AlbumDetail
 
 from typing import List
 
@@ -115,7 +115,12 @@ async def unfollow_user(follower_id: int, followee_id: int) -> Message:
 async def get_playlists(user_id: int) -> List[str]:
     return get_user_playlist(user_id)
 
+
 @app.post('/api/token/{token}')
 async def valid_token(token: str) -> bool:
     return is_token_valid(token)
 
+
+@app.get('/api/album/{album_id}')
+async def valid_token(album_id: int) -> AlbumDetail:
+    return get_album_details_by_id(album_id)

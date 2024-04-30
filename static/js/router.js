@@ -11,7 +11,7 @@ const routes = {
     "/login": {html: "/static/pages/login.html", js: null, css: [], jsr: ['/static/js/login.js']},
     "/profile.html": {html: "/static/pages/profile.html", js: null, css: [], jsr: []},
     "/followers.html": {html: "/static/pages/followers.html", js: null, css: [], jsr: []},
-    "/following.html": {html: "/static/pages/following.html", js: null, css: [], jsr: []}
+    "/following.html": {html: "/static/pages/following.html", js: null, css: [], jsr: []},
 };
 
 const loadedCSS = {};
@@ -29,7 +29,7 @@ const handleLocation = async () => {
     let route = routes[path] || routes[404];
 
 
-        // Handle Post
+    // Handle Post
     if (path.match(/^\/search\/(.+)$/)) {
         route = {
             html: "/static/pages/search.html",
@@ -38,6 +38,17 @@ const handleLocation = async () => {
             jsr: []
         };
     }
+
+    // Handle Album detail
+    if (path.match(/^\/album\/(.+)$/)) {
+        route = {
+            html: "/static/pages/album.html",
+            js: "/static/js/album.js",
+            css: [],
+            jsr: []
+        };
+    }
+
 
     const html = await fetch(route.html).then((data) => data.text());
 
