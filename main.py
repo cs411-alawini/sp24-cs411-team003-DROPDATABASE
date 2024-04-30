@@ -63,6 +63,14 @@ async def index(top_n: int) -> IndexData:
     # Make sure this function actually returns an IndexData object
     return get_index_data(top_n)
 
+@app.get('/api/recommend/{user_id}')
+async def get_recommendations(user_id: int) -> AlbumRecommendationList:
+    try:
+        data = get_recommend_album_by_user_id(user_id)
+        print(data)
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @app.post('/api/get_token')
 async def get_token(user_name: str, user_pass: str) -> Message:
@@ -191,3 +199,4 @@ async def rate_track_api(track_id: int, rating_request: TrackRatingRequest):
 @app.get("/rate/track")
 async def read_track_rate():
     return FileResponse('static/pages/track_rate.html')
+

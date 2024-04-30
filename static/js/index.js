@@ -4,6 +4,22 @@
 
 */
 
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp(
+      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+function fetchUserID(username) {
+return fetch(`http://127.0.0.1:8000/api/get_userid/${encodeURIComponent(username)}`)
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('User not found');
+      }
+      return response.json();
+  });
+}
+
 function trend_artist_render(ArtistInfo) {
     let content = '';
     content += ''
@@ -46,6 +62,30 @@ function trend_album_render(AlbumInfo) {
     return content;
 }
 
+function rec_album_render(AlbumRecommendationList) {
+  let content = '';
+  for (let n = 1; n <= 4; n++) {
+      // Append HTML for each artist card with dynamic image and album info
+      content += `
+    <div class="col-md-3 col-sm-6">
+      <div class="card">
+        <img src="/static/img/card${n}.jpeg" class="card-img-top" alt="Baby Gravy Mix">
+        <div class="card-body">
+          <h5 class="card-title">${AlbumRecommendationList[n - 1]['AlbumTitle']}</h5>
+          <p class="card-text">${AlbumRecommendationList[n - 1]['ArtistName']}</p>
+        </div>
+        </a>
+      </div>
+    </div>
+  `;
+  }
+
+  return content;
+}
+
+
+
+
 // END RENDERING HELPERS
 fetchDataWithCache('http://localhost:8000/api/index/10', "index")
     .then(data => {
@@ -60,6 +100,24 @@ fetchDataWithCache('http://localhost:8000/api/index/10', "index")
         console.error('There was a problem with your fetch operation:', error);
         navigateTo("/404");
     });
+
+const t = getCookie("token");
+const username = t.split("|")[0];
+const user_id = fetchUserID(username)
+  .then(user_id => {
+  fetchDataWithCache('http://localhost:8000/api/recommend/' + user_id, "recommend")
+    .then(data => {
+        const renderPromises = [
+            renderWrapper(document.getElementById('top-album-container'), trend_artist_render(data))
+        ];
+
+        return Promise.all(renderPromises)
+    })
+    .catch(error => {
+        console.error('There was a problem with your fetch operation:', error);
+        navigateTo("/404");
+    });
+  });
 
 
 // Cleanup function
