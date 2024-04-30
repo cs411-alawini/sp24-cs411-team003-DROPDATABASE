@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-
+from fastapi import HTTPException
 from database.crud import get_index_data, get_userinfo, search_album, get_follower_by_userid, get_following_by_userid, \
     get_user_playlist, unfollow_userid, get_user_playlist
 from database.models import IndexData, Message, AlbumCover
@@ -115,7 +115,16 @@ async def unfollow_user(follower_id: int, followee_id: int) -> Message:
 async def get_playlists(user_id: int) -> List[str]:
     return get_user_playlist(user_id)
 
+
 @app.post('/api/token/{token}')
 async def valid_token(token: str) -> bool:
     return is_token_valid(token)
 
+
+@app.get('/api/get_userid/{user_name}')
+async def get_userid(user_name: str) -> int:
+    user_info = get_userinfo(user_name)
+    if user_info is not None:
+        return user_info.UserID
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
