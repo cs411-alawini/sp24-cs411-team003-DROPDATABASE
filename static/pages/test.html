@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test User Data</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>User Data Test</h2>
+        <!-- User Followers Section -->
+        <div class="mt-4">
+            <h3>Followers (<span id="followers-count">0</span>)</h3>
+            <ul id="followers" class="list-group"></ul>
+        </div>
+
+        <!-- User Following Section -->
+        <div class="mt-4">
+            <h3>Following (<span id="following-count">0</span>)</h3>
+            <ul id="following" class="list-group"></ul>
+        </div>
+
+        <!-- User Playlists Section -->
+        <div class="mt-4">
+            <h3>Playlists</h3>
+            <ul id="playlists" class="list-group"></ul>
+        </div>
+    </div>
+
+    <script>
+        const userID = 1; // We'll use a fixed user ID for this test
+
+        function fetchData(path, elementID, countElementID) {
+            fetch(`http://127.0.0.1:8000/api/user/${userID}` + path)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById(elementID);
+                    container.innerHTML = ''; // Clear previous data
+                    data.forEach(item => {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'list-group-item';
+                        listItem.textContent = item;
+                        container.appendChild(listItem);
+                    });
+                    if (countElementID) {
+                        // Update the count element
+                        document.getElementById(countElementID).textContent = data.length;
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Fetch and display the user's followers, following, and playlists
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData('/followers', 'followers', 'followers-count');
+            fetchData('/following', 'following', 'following-count');
+            fetchData('/playlists', 'playlists');
+        });
+    </script>
+</body>
+</html>
