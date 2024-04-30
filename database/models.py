@@ -87,3 +87,13 @@ class ArtistDetail(BaseModel):
     ArtistName: str
     Rating: Optional[float]
     ArtistCover: Optional[HttpUrl] = "https://api.cirno.me/anipic/"
+
+
+class TrackRatingRequest(BaseModel):
+    user_id: int
+    rating: int
+
+
+class RatingRequest(BaseModel):
+    user_id: int
+    rating: int

@@ -6,7 +6,6 @@ from fastapi import HTTPException
 from database.crud import *
 from database.models import *
 
-
 from typing import List
 
 import base64
@@ -156,6 +155,7 @@ async def api_remove_playlist(user_id: int, playlist_name: str):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+
 @app.get('/api/album/{album_id}')
 async def get_album_detail(album_id: int) -> AlbumDetail:
     return get_album_details_by_id(album_id)
@@ -164,9 +164,8 @@ async def get_album_detail(album_id: int) -> AlbumDetail:
 @app.get('/api/artist/{artist_id}')
 async def get_artist_info(artist_id: int) -> ArtistDetail:
     return get_artist_detail(artist_id)
-class RatingRequest(BaseModel):
-    user_id: int
-    rating: int
+
+
 @app.post('/api/rate/album/{album_id}')
 async def rate_an_album(album_id: int, rating_request: RatingRequest):
     try:
@@ -174,12 +173,7 @@ async def rate_an_album(album_id: int, rating_request: RatingRequest):
         return {"message": "Album rated successfully"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-@app.get("/rate/album/{album_id}")
-async def read_album_rate():
-    return FileResponse('static/pages/album_rate.html')
-class TrackRatingRequest(BaseModel):
-    user_id: int
-    rating: int
+
 
 @app.post('/api/rate/track/{track_id}')
 async def rate_track_api(track_id: int, rating_request: TrackRatingRequest):
@@ -188,6 +182,8 @@ async def rate_track_api(track_id: int, rating_request: TrackRatingRequest):
         return {"message": "Track rated successfully"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-@app.get("/rate/track")
-async def read_track_rate():
-    return FileResponse('static/pages/track_rate.html')
+
+
+@app.post('/api/aid/{track_id}')
+async def get_tid(track_id: int) -> Optional[int]:
+    return get_album_id_by_tid(track_id)

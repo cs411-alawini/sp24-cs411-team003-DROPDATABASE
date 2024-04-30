@@ -322,6 +322,8 @@ def remove_playlist(user_id: int, playlist_name: str):
     except Exception as e:
         sql_cur.rollback()
         raise e
+
+
 def get_album_details_by_id(album_id: int):
     sql = '''
     SELECT 
@@ -409,6 +411,7 @@ def get_recommendation_by_userid(user_id: int) -> AlbumRecommendationList:
     rows = sql_cur.execute(sql, ())
     return AlbumRecommendationList(recommendations=rows)
 
+
 @err_handler
 def rate_track(user_id: int, track_id: int, rating: int):
     try:
@@ -422,3 +425,17 @@ def rate_track(user_id: int, track_id: int, rating: int):
     except Exception as e:
         sql_cur.rollback()
         raise e
+
+
+@err_handler
+def get_album_id_by_tid(tid: int) -> Optional[int]:
+    sql = '''
+    SELECT AlbumID
+    FROM Track
+    WHERE TrackID = %s;
+    '''
+
+    rows = sql_cur.execute(sql, (tid,))
+    if len(rows) != 1:
+        return None
+    return rows[0]['AlbumID']

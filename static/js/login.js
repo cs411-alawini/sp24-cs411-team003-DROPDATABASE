@@ -33,14 +33,3 @@
       showAlert("Error: " + error, "alert-danger");
     });
   }
-
-  function showAlert(message, alertType) {
-    var alertDiv = document.createElement("div");
-    alertDiv.className = "alert " + alertType;
-    alertDiv.appendChild(document.createTextNode(message));
-    var container = document.querySelector(".container");
-    container.insertBefore(alertDiv, container.firstChild);
-    setTimeout(function(){
-      alertDiv.remove();
-    }, 3000);
-  }

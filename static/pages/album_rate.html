@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Rate Album</title>
-</head>
-<body>
-    <h1>Rate an Album</h1>
-    <form id="rateAlbumForm">
-        <input type="number" id="albumRating" min="1" max="5" placeholder="Rating (1-5)" required>
-        <button type="button" onclick="submitRating()">Submit Rating</button>
+<div class="container mt-4">
+    <h1 class="mb-4">Rate an Album</h1>
+    <form id="rateAlbumForm" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="albumRating" class="form-label">Album Rating</label>
+            <input type="number" class="form-control" id="albumRating" name="rating" placeholder="Rating (1-5)" min="1"
+                   max="5" required>
+            <div class="invalid-feedback">
+                Please enter a valid rating from 1 to 5.
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="submitAlbumRating">Submit Rating</button>
     </form>
-
-    <script src="rating.js"></script>
-</body>
-</html>
+</div>

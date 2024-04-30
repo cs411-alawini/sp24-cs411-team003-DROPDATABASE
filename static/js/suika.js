@@ -68,3 +68,23 @@ async function fetchDataWithCache(url, name, exp_hour = 1) {
             });
     }
 }
+
+
+function showAlert(message, alertType) {
+    var alertDiv = document.createElement("div");
+    alertDiv.className = "alert " + alertType + " alert-dismissible fade show";
+    alertDiv.role = "alert";
+    alertDiv.appendChild(document.createTextNode(message));
+    var closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "btn-close";
+    closeButton.setAttribute('data-bs-dismiss', 'alert');
+    closeButton.setAttribute('aria-label', 'Close');
+    alertDiv.appendChild(closeButton);
+
+    var container = document.querySelector(".container");
+    container.insertBefore(alertDiv, container.firstChild);
+    setTimeout(function () {
+        alertDiv.remove();
+    }, 3000);
+}

@@ -25,7 +25,8 @@ function render_album_info(AlbumInfo) {
         <p class="card-text"><strong>Artist: </strong>${AlbumInfo['ArtistName']}</p>
         <p class="card-text"><strong>Rating: </strong>${AlbumInfo['Rating'] === null ? '2.5' : AlbumInfo['Rating']}/5</p>
         <p class="card-text"><small class="text-muted">Album ID: ${AlbumInfo['AlbumID']}</small></p>
-        <p class="card-text"><small class="text-muted">Artist ID: ${AlbumInfo['ArtistID']}</small></p>    
+        <p class="card-text"><small class="text-muted">Artist ID: ${AlbumInfo['ArtistID']}</small></p> 
+        <a href="/rate/album/${AlbumInfo['AlbumID']}" class="btn btn-primary">Rate This Album</a>
     `
 }
 
@@ -36,7 +37,9 @@ function render_track_info(TrackInfo) {
         content  += `
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 ${TrackInfo[n]['TrackName']}
-                <span class="badge bg-primary rounded-pill">${TrackInfo[n]['Rating'] === null ? 'no rating' : TrackInfo[n]['Rating']}</span>
+                <a href="/rate/track/${TrackInfo[n]['TrackID']}">
+                    <span class="badge bg-primary rounded-pill">${TrackInfo[n]['Rating'] === null ? 'no rating' : TrackInfo[n]['Rating']}</span>
+                </a>
             </li>
         `
     }

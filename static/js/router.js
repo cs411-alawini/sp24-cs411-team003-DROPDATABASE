@@ -59,6 +59,25 @@ const handleLocation = async () => {
         };
     }
 
+    // Handle Album Rating
+    if (path.match(/^\/rate\/album\/(\d+)$/)) {
+        route = {
+            html: "/static/pages/album_rate.html",
+            js: "/static/js/rating.js",
+            css: [],
+            jsr: []
+        };
+    }
+
+    // Handle Track detail
+    if (path.match(/^\/rate\/track\/(\d+)$/)) {
+        route = {
+            html: "/static/pages/track_rate.html",
+            js: "/static/js/rating.js",
+            css: [],
+            jsr: []
+        };
+    }
 
     const html = await fetch(route.html).then((data) => data.text());
 
