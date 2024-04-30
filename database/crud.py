@@ -400,11 +400,10 @@ def get_recommendation_by_userid(user_id: int) -> AlbumRecommendationList:
 
     """
     sql = '''
-    SELECT DISTINCT a.AlbumTitle, ar.ArtistName
+    SELECT DISTINCT a.AlbumID, a.AlbumTitle, ar.ArtistName
     FROM ArtistAlbum aa
     JOIN Album a ON aa.AlbumID = a.AlbumID
     JOIN Artist ar ON aa.ArtistID = ar.ArtistID
-    
     LIMIT 5
     '''
 

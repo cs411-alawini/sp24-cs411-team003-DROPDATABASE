@@ -166,6 +166,16 @@ async def get_artist_info(artist_id: int) -> ArtistDetail:
     return get_artist_detail(artist_id)
 
 
+@app.get("/api/recommendations/{user_id}")
+async def get_recommendations(user_id: int):
+    try:
+        recommendations = get_recommendation_by_userid(user_id)
+        return recommendations
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
 @app.post('/api/rate/album/{album_id}')
 async def rate_an_album(album_id: int, rating_request: RatingRequest):
     try:

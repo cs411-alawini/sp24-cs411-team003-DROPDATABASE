@@ -8,6 +8,7 @@ class AlbumRating(BaseModel):
 
 
 class AlbumRecommendation(BaseModel):
+    AlbumID: int
     AlbumTitle: str
     ArtistName: str
 
