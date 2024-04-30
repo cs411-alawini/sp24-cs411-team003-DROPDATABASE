@@ -106,6 +106,7 @@ fetchUserID(username)
             })
             .then(data => {
                 console.log(data); // Check the parsed data
+                location.reload()
                 alert(data.message || 'No message received');
             })
             .catch(error => {

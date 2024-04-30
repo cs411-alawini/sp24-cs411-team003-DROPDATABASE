@@ -273,7 +273,6 @@ def get_user_playlist(user_id: int) -> List[str]:
 
 
 @err_handler
-<<<<<<< HEAD
 def follow_userid(follower_id: int, followee_id: int):
     # Check if the user to follow exists
     check_user_sql = '''
@@ -323,7 +322,6 @@ def remove_playlist(user_id: int, playlist_name: str):
     except Exception as e:
         sql_cur.rollback()
         raise e
-=======
 def get_album_details_by_id(album_id: int):
     sql = '''
     SELECT 
@@ -410,4 +408,3 @@ def get_recommendation_by_userid(user_id: int) -> AlbumRecommendationList:
 
     rows = sql_cur.execute(sql, ())
     return AlbumRecommendationList(recommendations=rows)
->>>>>>> 37a614c739dde57c0c7c291e7835cb5a9460765d
