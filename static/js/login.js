@@ -18,10 +18,11 @@
         document.cookie = "token=" + data.content;
         // Show success message
         showAlert("Login successful", "alert-success");
-
         // Replace login button with username
         var loginField = document.getElementById("login-btn");
         loginField.innerText = username
+        window.location.href = "/";
+
       } else {
         // Show error message
         showAlert("Login failed. Error message: " + data.msg, "alert-danger");

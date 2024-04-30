@@ -273,6 +273,121 @@ def get_user_playlist(user_id: int) -> List[str]:
 
 
 @err_handler
+def follow_userid(follower_id: int, followee_id: int):
+    # Check if the user to follow exists
+    check_user_sql = '''
+        SELECT EXISTS(SELECT 1 FROM User WHERE UserID = %s) AS UserExists;
+    '''
+    exists = sql_cur.execute(check_user_sql, (followee_id,))
+    if not exists[0]['UserExists']:
+        raise Exception('User to follow does not exist.')
+
+    # Insert follow relation if not exists
+    follow_sql = '''
+        INSERT INTO UserFollow (UserID, FollowID)
+        SELECT * FROM (SELECT %s, %s) AS tmp
+        WHERE NOT EXISTS (
+            SELECT 1 FROM UserFollow WHERE UserID = %s AND FollowID = %s
+        ) LIMIT 1;
+    '''
+    try:
+        sql_cur.execute(follow_sql, (follower_id, followee_id, follower_id, followee_id))
+        sql_cur.commit()
+    except Exception as e:
+        sql_cur.rollback()
+        raise e
+
+
+@err_handler
+def add_playlist(user_id: int, playlist_name: str):
+    insert_sql = '''
+        INSERT INTO PlayList (UserID, PlayListName) VALUES (%s, %s);
+    '''
+    try:
+        sql_cur.execute(insert_sql, (user_id, playlist_name))
+        sql_cur.commit()
+    except Exception as e:
+        sql_cur.rollback()
+        raise e
+
+
+@err_handler
+def remove_playlist(user_id: int, playlist_name: str):
+    delete_sql = '''
+        DELETE FROM PlayList WHERE UserID = %s AND PlayListName = %s;
+    '''
+    try:
+        sql_cur.execute(delete_sql, (user_id, playlist_name))
+        sql_cur.commit()
+    except Exception as e:
+        sql_cur.rollback()
+        raise e
+def get_album_details_by_id(album_id: int):
+    sql = '''
+    SELECT 
+        a.AlbumID, 
+        a.AlbumTitle, 
+        ar.ArtistID,
+        ar.ArtistName, 
+        AVG(ra.Rating) AS AvgRating
+    FROM Album a
+    JOIN ArtistAlbum aa ON a.AlbumID = aa.AlbumID
+    JOIN Artist ar ON aa.ArtistID = ar.ArtistID
+    LEFT JOIN RateAlbum ra ON a.AlbumID = ra.AlbumID
+    WHERE a.AlbumID = %s
+    GROUP BY a.AlbumID, a.AlbumTitle, ar.ArtistID;
+    '''
+
+    rows = sql_cur.execute(sql, (album_id,))
+
+    album_info = AlbumInfo(AlbumID=rows[0]['AlbumID'], AlbumTitle=rows[0]['AlbumTitle'], ArtistID=rows[0]['ArtistID'],
+                           ArtistName=rows[0]['ArtistName'], Rating=rows[0]['AvgRating'])
+    sql = '''
+    SELECT 
+        t.TrackID, 
+        t.TrackName, 
+        AVG(rt.Rating) AS AvgRating
+        FROM Track t
+        LEFT JOIN RateTrack rt ON t.TrackID = rt.TrackID
+        WHERE t.AlbumID = %s
+        GROUP BY t.TrackID, t.TrackName
+        ORDER BY t.TrackID;
+    '''
+
+    rows = sql_cur.execute(sql, (album_id,))
+    track_info = [Track(TrackID=row['TrackID'], TrackName=row['TrackName'], Rating=row['AvgRating']) for row in rows]
+
+    return AlbumDetail(
+        AlbumInfo=album_info,
+        Tracks=track_info
+    )
+
+
+@err_handler
+def get_artist_detail(artist_id: int):
+    sql = '''
+        SELECT 
+        ar.ArtistID,
+        ar.ArtistName,
+        AVG(ra.Rating) AS AvgRating
+    FROM Artist ar
+    JOIN ArtistAlbum aa ON ar.ArtistID = aa.ArtistID
+    JOIN Album a ON aa.AlbumID = a.AlbumID
+    LEFT JOIN RateAlbum ra ON a.AlbumID = ra.AlbumID
+    WHERE ar.ArtistID = %s
+    GROUP BY ar.ArtistID, ar.ArtistName;
+    '''
+
+    rows = sql_cur.execute(sql, (artist_id,))
+    info = ArtistDetail(
+        ArtistID=rows[0]['ArtistID'],
+        ArtistName=rows[0]['ArtistName'],
+        Rating=rows[0]['AvgRating']
+    )
+    return info
+
+
+@err_handler
 def get_recommendation_by_userid(user_id: int) -> AlbumRecommendationList:
     """
     TODO: Refactor the initial implementation of the recommendation system.
@@ -293,3 +408,17 @@ def get_recommendation_by_userid(user_id: int) -> AlbumRecommendationList:
 
     rows = sql_cur.execute(sql, ())
     return AlbumRecommendationList(recommendations=rows)
+
+@err_handler
+def rate_track(user_id: int, track_id: int, rating: int):
+    try:
+        sql = '''
+        INSERT INTO RateTrack (UserID, TrackID, Rating)
+        VALUES (%s, %s, %s)
+        ON DUPLICATE KEY UPDATE Rating = VALUES(Rating);
+        '''
+        sql_cur.execute(sql, (user_id, track_id, rating))
+        sql_cur.commit()
+    except Exception as e:
+        sql_cur.rollback()
+        raise e

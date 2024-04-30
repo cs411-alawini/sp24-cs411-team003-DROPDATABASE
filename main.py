@@ -2,10 +2,10 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi import HTTPException
+from database.crud import *
+from database.models import *
 
-from database.crud import get_index_data, get_userinfo, search_album, get_follower_by_userid, get_following_by_userid, \
-    get_user_playlist, unfollow_userid, get_user_playlist
-from database.models import IndexData, Message, AlbumCover
 
 from typing import List
 
@@ -115,7 +115,79 @@ async def unfollow_user(follower_id: int, followee_id: int) -> Message:
 async def get_playlists(user_id: int) -> List[str]:
     return get_user_playlist(user_id)
 
+
 @app.post('/api/token/{token}')
 async def valid_token(token: str) -> bool:
     return is_token_valid(token)
 
+
+@app.get('/api/get_userid/{user_name}')
+async def get_userid(user_name: str) -> int:
+    user_info = get_userinfo(user_name)
+    if user_info is not None:
+        return user_info.UserID
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
+
+
+@app.post('/api/user/{follower_id}/follow/{followee_id}')
+async def api_follow_userid(follower_id: int, followee_id: int):
+    try:
+        follow_userid(follower_id, followee_id)
+        return {"message": "Followed successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post('/api/user/{user_id}/playlist/add/{playlist_name}')
+async def api_add_playlist(user_id: int, playlist_name: str):
+    try:
+        add_playlist(user_id, playlist_name)
+        return {"message": "Playlist created successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post('/api/user/{user_id}/playlist/remove/{playlist_name}')
+async def api_remove_playlist(user_id: int, playlist_name: str):
+    try:
+        remove_playlist(user_id, playlist_name)
+        return {"message": "Playlist removed successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.get('/api/album/{album_id}')
+async def get_album_detail(album_id: int) -> AlbumDetail:
+    return get_album_details_by_id(album_id)
+
+
+@app.get('/api/artist/{artist_id}')
+async def get_artist_info(artist_id: int) -> ArtistDetail:
+    return get_artist_detail(artist_id)
+class RatingRequest(BaseModel):
+    user_id: int
+    rating: int
+@app.post('/api/rate/album/{album_id}')
+async def rate_an_album(album_id: int, rating_request: RatingRequest):
+    try:
+        rate_album(rating_request.user_id, album_id, rating_request.rating)
+        return {"message": "Album rated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+@app.get("/rate/album/{album_id}")
+async def read_album_rate():
+    return FileResponse('static/pages/album_rate.html')
+class TrackRatingRequest(BaseModel):
+    user_id: int
+    rating: int
+
+@app.post('/api/rate/track/{track_id}')
+async def rate_track_api(track_id: int, rating_request: TrackRatingRequest):
+    try:
+        rate_track(rating_request.user_id, track_id, rating_request.rating)
+        return {"message": "Track rated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+@app.get("/rate/track")
+async def read_track_rate():
+    return FileResponse('static/pages/track_rate.html')
