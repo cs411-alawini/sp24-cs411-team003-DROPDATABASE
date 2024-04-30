@@ -408,3 +408,17 @@ def get_recommendation_by_userid(user_id: int) -> AlbumRecommendationList:
 
     rows = sql_cur.execute(sql, ())
     return AlbumRecommendationList(recommendations=rows)
+
+@err_handler
+def rate_track(user_id: int, track_id: int, rating: int):
+    try:
+        sql = '''
+        INSERT INTO RateTrack (UserID, TrackID, Rating)
+        VALUES (%s, %s, %s)
+        ON DUPLICATE KEY UPDATE Rating = VALUES(Rating);
+        '''
+        sql_cur.execute(sql, (user_id, track_id, rating))
+        sql_cur.commit()
+    except Exception as e:
+        sql_cur.rollback()
+        raise e
