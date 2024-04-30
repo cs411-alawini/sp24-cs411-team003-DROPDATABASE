@@ -271,8 +271,4 @@ def get_user_playlist(user_id: int) -> List[str]:
         WHERE UserID = %s;
     '''
     rows = sql_cur.execute(sql, (user_id,))
-<<<<<<< HEAD
-    return [{'PlayListID': row['PlayListID'], 'PlayListName': row['PlayListName']} for row in rows]
-=======
     return [row['PlayListName'] for row in rows]
->>>>>>> 8b4f01de16c2abf7a5ca4e7a519549f64255305e
