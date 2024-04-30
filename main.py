@@ -173,3 +173,41 @@ async def get_recommendations(user_id: int):
         return recommendations
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+class RatingRequest(BaseModel):
+    user_id: int
+    rating: int
+
+
+@app.post('/api/rate/album/{album_id}')
+async def rate_an_album(album_id: int, rating_request: RatingRequest):
+    try:
+        rate_album(rating_request.user_id, album_id, rating_request.rating)
+        return {"message": "Album rated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.get("/rate/album/{album_id}")
+async def read_album_rate():
+    return FileResponse('static/pages/album_rate.html')
+
+
+class TrackRatingRequest(BaseModel):
+    user_id: int
+    rating: int
+
+
+@app.post('/api/rate/track/{track_id}')
+async def rate_track_api(track_id: int, rating_request: TrackRatingRequest):
+    try:
+        rate_track(rating_request.user_id, track_id, rating_request.rating)
+        return {"message": "Track rated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.get("/rate/track")
+async def read_track_rate():
+    return FileResponse('static/pages/track_rate.html')
