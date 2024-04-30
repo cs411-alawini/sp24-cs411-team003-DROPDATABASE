@@ -75,12 +75,12 @@ async def search(album_name: str) -> List[AlbumCover]:
 
 
 @app.get('/api/user/{user_id}/followers')
-async def get_followers(user_id: int) -> List[int]:
+async def get_followers(user_id: int) -> List[str]:
     return get_follower_by_userid(user_id)
 
 
 @app.get('/api/user/{user_id}/following')
-async def get_following(user_id: int) -> List[int]:
+async def get_following(user_id: int) -> List[str]:
     return get_following_by_userid(user_id)
 
 

@@ -198,25 +198,53 @@ def get_rate_by_userid(user_id: int) -> List[UserAlbumRate]:
 
 
 @err_handler
-def get_follower_by_userid(user_id: int) -> List[int]:
+def get_follower_by_userid(user_id: int) -> List[str]:
     sql = '''
-        SELECT UserID
-        FROM UserFollow
-        WHERE FollowID = %s;
+        SELECT u.UserName
+        FROM User u
+        INNER JOIN UserFollow uf ON u.UserID = uf.UserID
+        WHERE uf.FollowID = %s;
     '''
     rows = sql_cur.execute(sql, (user_id,))
-    return [row['UserID'] for row in rows]
+    return [row['UserName'] for row in rows]
 
 
 @err_handler
-def get_following_by_userid(user_id: int) -> List[int]:
+def get_following_by_userid(user_id: int) -> List[str]:
     sql = '''
-        SELECT FollowID
-        FROM UserFollow
-        WHERE UserID = %s;
+        SELECT u.UserName
+        FROM User u
+        INNER JOIN UserFollow uf ON u.UserID = uf.FollowID
+        WHERE uf.UserID = %s;
     '''
     rows = sql_cur.execute(sql, (user_id,))
-    return [row['FollowID'] for row in rows]
+    return [row['UserName'] for row in rows]
+
+@err_handler
+def follow_userid(follower_id: int, followee_id: int) -> None:
+    # Check if followee_id exists in User table
+    user_check_sql = '''
+        SELECT EXISTS(SELECT 1 FROM User WHERE UserID = %s) AS UserExists;
+    '''
+    user_exists = sql_cur.execute(user_check_sql, (followee_id,))
+
+    if user_exists[0]['UserExists']:
+        # Insert follow relationship if not already exists
+        follow_sql = '''
+            INSERT INTO UserFollow (UserID, FollowID)
+            SELECT * FROM (SELECT %s, %s) AS tmp
+            WHERE NOT EXISTS (
+                SELECT UserID FROM UserFollow WHERE UserID = %s AND FollowID = %s
+            ) LIMIT 1;
+        '''
+        try:
+            sql_cur.execute(follow_sql, (follower_id, followee_id, follower_id, followee_id))
+            sql_cur.commit()
+        except Exception as e:
+            sql_cur.rollback()
+            raise e
+    else:
+        raise Exception(f"User with UserID {followee_id} does not exist.")
 
 
 @err_handler

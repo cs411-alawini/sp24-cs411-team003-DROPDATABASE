@@ -25,21 +25,31 @@ function fetchFollowing(userID) {
     .catch(error => console.error('Error fetching following:', error));
 }
 
-// function fetchPlaylists(userID) {
-//   fetch(`http://127.0.0.1:8000/api/user/${userID}/playlists`)
-//     .then(response => response.json())
-//     .then(data => {
-//       const playlistContainer = document.querySelector(".list-group");
-//       playlistContainer.innerHTML = ''; // Clear existing playlists
-//       data.forEach(playlist => {
-//         const listItem = document.createElement('li');
-//         listItem.className = 'list-group-item';
-//         listItem.textContent = playlist.PlayListName;
-//         playlistContainer.appendChild(listItem);
-//       });
-//     })
-//     .catch(error => console.error('Error fetching playlists:', error));
-// }
+function fetchPlaylists(userID) {
+  fetch(`http://127.0.0.1:8000/api/user/${userID}/playlists`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      return response.json();
+    })
+    .then(playlists => {
+      const playlistContainer = document.querySelector(".list-group");
+      playlistContainer.innerHTML = ''; // Clear existing playlists
+      playlists.forEach(playlistName => {
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item';
+        listItem.textContent = playlistName;
+        playlistContainer.appendChild(listItem);
+      });
+    })
+    .catch(error => console.error('Error fetching playlists:', error));
+}
 
-// Call this function when the profile page loads
-document.addEventListener('DOMContentLoaded', fetchUserProfile);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const userID = getUserIDFromCookie();
+  if (userID) {
+    fetchUserProfile();
+  }
+});
