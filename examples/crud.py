@@ -16,3 +16,9 @@ pprint(get_userinfo("beckmercedes"))
 pprint(search_album("aa"))
 
 pprint(get_rate_by_userid(1))
+
+pprint(get_follower_by_userid(1))
+
+pprint(get_following_by_userid(1))
+
+pprint(get_user_playlist(1))

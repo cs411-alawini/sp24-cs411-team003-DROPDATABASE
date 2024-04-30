@@ -3,7 +3,8 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from database.crud import get_index_data, get_userinfo, search_album
+from database.crud import get_index_data, get_userinfo, search_album, get_follower_by_userid, get_following_by_userid, \
+    get_user_playlist, unfollow_userid, get_user_playlist
 from database.models import IndexData, Message, AlbumCover
 
 from typing import List
@@ -71,3 +72,27 @@ async def get_token(user_name: str, user_pass: str) -> Message:
 @app.get('/api/search/{album_name}')
 async def search(album_name: str) -> List[AlbumCover]:
     return search_album(album_name)
+
+
+@app.get('/api/user/{user_id}/followers')
+async def get_followers(user_id: int) -> List[int]:
+    return get_follower_by_userid(user_id)
+
+
+@app.get('/api/user/{user_id}/following')
+async def get_following(user_id: int) -> List[int]:
+    return get_following_by_userid(user_id)
+
+
+@app.post('/api/user/{follower_id}/unfollow/{followee_id}')
+async def unfollow_user(follower_id: int, followee_id: int) -> Message:
+    try:
+        unfollow_userid(follower_id, followee_id)
+        return Message(flag=True, msg="Successfully unfollowed.")
+    except Exception as e:
+        return Message(flag=False, msg=str(e))
+
+
+@app.get('/api/user/{user_id}/playlists')
+async def get_playlists(user_id: int) -> List[str]:
+    return get_user_playlist(user_id)

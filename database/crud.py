@@ -183,7 +183,6 @@ def rateAlbum(user_id: int, album_id: int, rating: int):
         raise e
 
 
-
 @err_handler
 def get_rate_by_userid(user_id: int) -> List[UserAlbumRate]:
     sql = '''
@@ -193,7 +192,7 @@ def get_rate_by_userid(user_id: int) -> List[UserAlbumRate]:
         WHERE RateAlbum.UserID = %s;
     '''
 
-    rows = sql_cur.execute(sql, (user_id, ))
+    rows = sql_cur.execute(sql, (user_id,))
 
     return [UserAlbumRate(AlbumID=i['AlbumID'], AlbumTitle=i['AlbumTitle'], Rating=i['Rating']) for i in rows]
 
@@ -208,6 +207,7 @@ def get_follower_by_userid(user_id: int) -> List[int]:
     rows = sql_cur.execute(sql, (user_id,))
     return [row['UserID'] for row in rows]
 
+
 @err_handler
 def get_following_by_userid(user_id: int) -> List[int]:
     sql = '''
@@ -217,6 +217,7 @@ def get_following_by_userid(user_id: int) -> List[int]:
     '''
     rows = sql_cur.execute(sql, (user_id,))
     return [row['FollowID'] for row in rows]
+
 
 @err_handler
 def unfollow_userid(follower_id: int, followee_id: int) -> None:
@@ -231,15 +232,13 @@ def unfollow_userid(follower_id: int, followee_id: int) -> None:
         sql_cur.rollback()
         raise e
 
+
 @err_handler
-def get_user_playlist(user_id: int) -> List[dict[str, any]]:
+def get_user_playlist(user_id: int) -> List[str]:
     sql = '''
-        SELECT PlayListID, PlayListName
+        SELECT PlayListName
         FROM PlayList
         WHERE UserID = %s;
     '''
     rows = sql_cur.execute(sql, (user_id,))
-    return [{'PlayListID': row['PlayListID'], 'PlayListName': row['PlayListName']} for row in rows]
-
-
-
+    return [row['PlayListName'] for row in rows]
