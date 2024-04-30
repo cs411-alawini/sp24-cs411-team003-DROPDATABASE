@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi import HTTPException
 from database.crud import get_index_data, get_userinfo, search_album, get_follower_by_userid, get_following_by_userid, \
-    get_user_playlist, unfollow_userid, get_user_playlist, follow_userid
+    get_user_playlist, unfollow_userid, get_user_playlist, follow_userid, add_playlist, remove_playlist
 from database.models import IndexData, Message, AlbumCover
 
 from typing import List
@@ -135,5 +135,23 @@ async def api_follow_userid(follower_id: int, followee_id: int):
     try:
         follow_userid(follower_id, followee_id)
         return {"message": "Followed successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post('/api/user/{user_id}/playlist/add/{playlist_name}')
+async def api_add_playlist(user_id: int, playlist_name: str):
+    try:
+        add_playlist(user_id, playlist_name)
+        return {"message": "Playlist created successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post('/api/user/{user_id}/playlist/remove/{playlist_name}')
+async def api_remove_playlist(user_id: int, playlist_name: str):
+    try:
+        remove_playlist(user_id, playlist_name)
+        return {"message": "Playlist removed successfully"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

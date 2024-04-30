@@ -41,11 +41,21 @@
 
         <!-- Dynamic Playlists Section -->
         <div class="mt-4">
-            <h3>Playlists</h3>
+            <h3>Playlists (<span id="playlist-count">0</span>)</h3>
             <ul class="list-group" id="playlists">
                 <!-- Playlists will be added here by profile.js -->
             </ul>
         </div>
+
+        <div class="mt-4">
+            <h3>Manage Playlist</h3>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter playlist name" id="playlist-name">
+                <button class="btn btn-success" type="button" id="create-playlist-btn">Create</button>
+                <button class="btn btn-danger" type="button" id="delete-playlist-btn">Delete</button>
+            </div>
+        </div>
+
     </div>
     <script src="../js/profile.js"></script>
     <script>

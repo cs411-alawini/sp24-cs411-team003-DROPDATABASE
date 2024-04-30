@@ -297,3 +297,29 @@ def follow_userid(follower_id: int, followee_id: int):
     except Exception as e:
         sql_cur.rollback()
         raise e
+
+
+@err_handler
+def add_playlist(user_id: int, playlist_name: str):
+    insert_sql = '''
+        INSERT INTO PlayList (UserID, PlayListName) VALUES (%s, %s);
+    '''
+    try:
+        sql_cur.execute(insert_sql, (user_id, playlist_name))
+        sql_cur.commit()
+    except Exception as e:
+        sql_cur.rollback()
+        raise e
+
+
+@err_handler
+def remove_playlist(user_id: int, playlist_name: str):
+    delete_sql = '''
+        DELETE FROM PlayList WHERE UserID = %s AND PlayListName = %s;
+    '''
+    try:
+        sql_cur.execute(delete_sql, (user_id, playlist_name))
+        sql_cur.commit()
+    except Exception as e:
+        sql_cur.rollback()
+        raise e
