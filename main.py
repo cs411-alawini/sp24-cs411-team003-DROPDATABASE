@@ -30,6 +30,24 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
+def is_token_valid(token: str):
+    if token is None:
+        return False
+
+    token = token.split('|')
+    if len(token) != 2:
+        return False
+
+    userName, userPass = token[0], token[1]
+
+    info = get_userinfo(userName)
+
+    if info is None:
+        return False
+
+    return info.Password == userPass
+
+
 @app.get("/")
 async def read_index():
     return FileResponse('static/index.html')
@@ -96,3 +114,8 @@ async def unfollow_user(follower_id: int, followee_id: int) -> Message:
 @app.get('/api/user/{user_id}/playlists')
 async def get_playlists(user_id: int) -> List[str]:
     return get_user_playlist(user_id)
+
+@app.post('/api/token/{token}')
+async def valid_token(token: str) -> bool:
+    return is_token_valid(token)
+
