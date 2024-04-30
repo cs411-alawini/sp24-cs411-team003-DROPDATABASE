@@ -29,6 +29,24 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
+def is_token_valid(token: str):
+    if token is None:
+        return False
+
+    token = token.split('|')
+    if len(token) != 2:
+        return False
+
+    userName, userPass = token[0], token[1]
+
+    info = get_userinfo(userName)
+
+    if info is None:
+        return False
+
+    return info.Password == userPass
+
+
 @app.get("/")
 async def read_index():
     return FileResponse('static/index.html')
@@ -71,3 +89,8 @@ async def get_token(user_name: str, user_pass: str) -> Message:
 @app.get('/api/search/{album_name}')
 async def search(album_name: str) -> List[AlbumCover]:
     return search_album(album_name)
+
+
+@app.post('/api/token/{token}')
+async def valid_token(token: str) -> bool:
+    return is_token_valid(token)
