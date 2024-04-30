@@ -21,4 +21,4 @@ run: install
 	@pipenv run uvicorn main:app
 
 dev:
-	@pipenv run uvicorn main:app --reload
+	@pipenv run uvicorn main:app --reload --port 8000

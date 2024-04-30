@@ -59,3 +59,31 @@ class UserAlbumRate(BaseModel):
     AlbumID: int
     AlbumTitle: str
     Rating: int
+
+
+class AlbumInfo(BaseModel):
+    AlbumID: int
+    AlbumTitle: str
+    Rating: Optional[float]
+    AlbumCover: Optional[HttpUrl] = "https://api.cirno.me/anipic/"
+    ArtistID: int
+    ArtistName: str
+    ArtistCover: Optional[HttpUrl] = "https://api.cirno.me/anipic/"
+
+
+class Track(BaseModel):
+    TrackID: int
+    TrackName: str
+    Rating: Optional[float]
+
+
+class AlbumDetail(BaseModel):
+    AlbumInfo: AlbumInfo
+    Tracks: List[Track]
+
+
+class ArtistDetail(BaseModel):
+    ArtistID: int
+    ArtistName: str
+    Rating: Optional[float]
+    ArtistCover: Optional[HttpUrl] = "https://api.cirno.me/anipic/"

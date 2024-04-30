@@ -4,8 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi import HTTPException
 from database.crud import get_index_data, get_userinfo, search_album, get_follower_by_userid, get_following_by_userid, \
+<<<<<<< HEAD
     get_user_playlist, unfollow_userid, get_user_playlist, follow_userid, add_playlist, remove_playlist
 from database.models import IndexData, Message, AlbumCover
+=======
+    get_user_playlist, unfollow_userid, get_user_playlist, get_album_details_by_id, get_artist_detail
+from database.models import IndexData, Message, AlbumCover, AlbumDetail, ArtistDetail
+>>>>>>> 37a614c739dde57c0c7c291e7835cb5a9460765d
 
 from typing import List
 
@@ -121,6 +126,7 @@ async def valid_token(token: str) -> bool:
     return is_token_valid(token)
 
 
+<<<<<<< HEAD
 @app.get('/api/get_userid/{user_name}')
 async def get_userid(user_name: str) -> int:
     user_info = get_userinfo(user_name)
@@ -155,3 +161,13 @@ async def api_remove_playlist(user_id: int, playlist_name: str):
         return {"message": "Playlist removed successfully"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+=======
+@app.get('/api/album/{album_id}')
+async def get_album_detail(album_id: int) -> AlbumDetail:
+    return get_album_details_by_id(album_id)
+
+
+@app.get('/api/artist/{artist_id}')
+async def get_artist_info(artist_id: int) -> ArtistDetail:
+    return get_artist_detail(artist_id)
+>>>>>>> 37a614c739dde57c0c7c291e7835cb5a9460765d

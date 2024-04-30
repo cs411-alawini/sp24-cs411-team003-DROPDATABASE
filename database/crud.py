@@ -153,10 +153,9 @@ def get_userinfo(user_name: str) -> Optional[UserInfo]:
 @err_handler
 def search_album(query: str) -> List[AlbumCover]:
     sql = '''
-    SELECT * FROM Album a
+    SELECT DISTINCT a.AlbumID, a.AlbumTitle, ar.ArtistName FROM Album a
     JOIN artistalbum a2 ON a.AlbumID = a2.AlbumID
     JOIN artist ar ON a2.ArtistID = ar.ArtistID
-
     WHERE AlbumTitle LIKE %s
     LIMIT 20;
     '''
@@ -171,7 +170,7 @@ def search_album(query: str) -> List[AlbumCover]:
 
 
 @err_handler
-def rateAlbum(user_id: int, album_id: int, rating: int):
+def rate_album(user_id: int, album_id: int, rating: int):
     try:
         # Call the rateAlbum stored procedure with the provided parameters
         sql_cur.callproc("rateAlbum", (user_id, album_id, rating,))
@@ -274,6 +273,7 @@ def get_user_playlist(user_id: int) -> List[str]:
 
 
 @err_handler
+<<<<<<< HEAD
 def follow_userid(follower_id: int, followee_id: int):
     # Check if the user to follow exists
     check_user_sql = '''
@@ -323,3 +323,91 @@ def remove_playlist(user_id: int, playlist_name: str):
     except Exception as e:
         sql_cur.rollback()
         raise e
+=======
+def get_album_details_by_id(album_id: int):
+    sql = '''
+    SELECT 
+        a.AlbumID, 
+        a.AlbumTitle, 
+        ar.ArtistID,
+        ar.ArtistName, 
+        AVG(ra.Rating) AS AvgRating
+    FROM Album a
+    JOIN ArtistAlbum aa ON a.AlbumID = aa.AlbumID
+    JOIN Artist ar ON aa.ArtistID = ar.ArtistID
+    LEFT JOIN RateAlbum ra ON a.AlbumID = ra.AlbumID
+    WHERE a.AlbumID = %s
+    GROUP BY a.AlbumID, a.AlbumTitle, ar.ArtistID;
+    '''
+
+    rows = sql_cur.execute(sql, (album_id,))
+
+    album_info = AlbumInfo(AlbumID=rows[0]['AlbumID'], AlbumTitle=rows[0]['AlbumTitle'], ArtistID=rows[0]['ArtistID'],
+                           ArtistName=rows[0]['ArtistName'], Rating=rows[0]['AvgRating'])
+    sql = '''
+    SELECT 
+        t.TrackID, 
+        t.TrackName, 
+        AVG(rt.Rating) AS AvgRating
+        FROM Track t
+        LEFT JOIN RateTrack rt ON t.TrackID = rt.TrackID
+        WHERE t.AlbumID = %s
+        GROUP BY t.TrackID, t.TrackName
+        ORDER BY t.TrackID;
+    '''
+
+    rows = sql_cur.execute(sql, (album_id,))
+    track_info = [Track(TrackID=row['TrackID'], TrackName=row['TrackName'], Rating=row['AvgRating']) for row in rows]
+
+    return AlbumDetail(
+        AlbumInfo=album_info,
+        Tracks=track_info
+    )
+
+
+@err_handler
+def get_artist_detail(artist_id: int):
+    sql = '''
+        SELECT 
+        ar.ArtistID,
+        ar.ArtistName,
+        AVG(ra.Rating) AS AvgRating
+    FROM Artist ar
+    JOIN ArtistAlbum aa ON ar.ArtistID = aa.ArtistID
+    JOIN Album a ON aa.AlbumID = a.AlbumID
+    LEFT JOIN RateAlbum ra ON a.AlbumID = ra.AlbumID
+    WHERE ar.ArtistID = %s
+    GROUP BY ar.ArtistID, ar.ArtistName;
+    '''
+
+    rows = sql_cur.execute(sql, (artist_id,))
+    info = ArtistDetail(
+        ArtistID=rows[0]['ArtistID'],
+        ArtistName=rows[0]['ArtistName'],
+        Rating=rows[0]['AvgRating']
+    )
+    return info
+
+
+@err_handler
+def get_recommendation_by_userid(user_id: int) -> AlbumRecommendationList:
+    """
+    TODO: Refactor the initial implementation of the recommendation system.
+    Currently, the code fetches random albums. Update it to generate personalized recommendations
+    based on user_id.
+
+    Also, I write a testcase in example/crud.py. run it to ensure bug free
+
+    """
+    sql = '''
+    SELECT DISTINCT a.AlbumTitle, ar.ArtistName
+    FROM ArtistAlbum aa
+    JOIN Album a ON aa.AlbumID = a.AlbumID
+    JOIN Artist ar ON aa.ArtistID = ar.ArtistID
+    
+    LIMIT 5
+    '''
+
+    rows = sql_cur.execute(sql, ())
+    return AlbumRecommendationList(recommendations=rows)
+>>>>>>> 37a614c739dde57c0c7c291e7835cb5a9460765d
