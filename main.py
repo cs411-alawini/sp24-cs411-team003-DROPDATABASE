@@ -6,7 +6,6 @@ from fastapi import HTTPException
 from database.crud import *
 from database.models import *
 
-
 from typing import List
 
 import base64
@@ -156,6 +155,7 @@ async def api_remove_playlist(user_id: int, playlist_name: str):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+
 @app.get('/api/album/{album_id}')
 async def get_album_detail(album_id: int) -> AlbumDetail:
     return get_album_details_by_id(album_id)
@@ -164,3 +164,12 @@ async def get_album_detail(album_id: int) -> AlbumDetail:
 @app.get('/api/artist/{artist_id}')
 async def get_artist_info(artist_id: int) -> ArtistDetail:
     return get_artist_detail(artist_id)
+
+
+@app.get("/api/recommendations/{user_id}")
+async def get_recommendations(user_id: int):
+    try:
+        recommendations = get_recommendation_by_userid(user_id)
+        return recommendations
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
