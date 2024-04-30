@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="header"></div>
+    <div class="container mt-5">
+        <!-- User Profile Section -->
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Username: JohnDoe</h2>
+                <p class="card-text">
+                    Following: <a href="following.html" class="link-primary">120</a> |
+                    Followers: <a href="followers.html" class="link-primary">300</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Playlists Section -->
+        <div class="mt-4">
+            <h3>Playlists</h3>
+            <ul class="list-group">
+                <li class="list-group-item">Chill Vibes</li>
+                <li class="list-group-item">Workout Hits</li>
+                <li class="list-group-item">Throwback 90s</li>
+                <!-- Add more playlists as needed -->
+            </ul>
+        </div>
+    </div>
+    <script>
+    $(function() {
+        $("#header").load("header.html"); // Ensure this path is correct
+    });
+    </script>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
