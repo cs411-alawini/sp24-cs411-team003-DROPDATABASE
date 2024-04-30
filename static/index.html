@@ -30,7 +30,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                 </ul>
-                <form class="d-flex" action="search.html" method="get">
+                <form class="d-flex" action="search.html" method="get" onsubmit="handleSubmit(this)">
                     <input class="form-control me-2" type="search" placeholder="Search songs, artists..."
                            aria-label="Search" name="query">
                     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -106,6 +106,24 @@
         ));
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
+
+    function handleSubmit(form) {
+    // Prevent the default form submission
+    event.preventDefault();
+
+    // Get the value of the search input
+    const searchQuery = form.query.value.trim();
+
+    // Check if the search query is not empty
+    if (searchQuery) {
+        // Redirect to the dynamic URL
+        window.location.href = `/search/${encodeURIComponent(searchQuery)}`;
+    } else {
+        // Optionally handle the case where the search query is empty
+        alert("Please enter a search query.");
+    }
+}
+
 </script>
 </body>
 

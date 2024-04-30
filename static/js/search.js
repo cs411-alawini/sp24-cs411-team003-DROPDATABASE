@@ -1,16 +1,38 @@
-function trend_artist_render(ArtistInfo) {
+
+
+const path = window.location.pathname;
+const regex = /^\/search\/(.+)$/;
+
+// Test the current path against the regex
+const match = path.match(regex);
+var query;
+
+if (match) {
+    query = match[1];
+} else {
+    query = match[0];
+}
+
+console.log("query is" + query)
+
+document.getElementById("search-hint").innerText = `Result for Album like '${query}'`
+
+
+function album_renderer(AlbumInfo) {
     let content = '';
-    content += ''
-    for (let n = 1; n <= 7; n++) {
+    for (let n = 0; n < AlbumInfo.length; n++) {
         // Append HTML for each artist card with dynamic image and album info
         content += `
-      <div class="artist-card">
-        <img src="/static/img/fig${n}.jpeg" alt="Artist Image ${n}">
-        <a href="/artist/${ArtistInfo[n - 1]['ArtistID']}">
-            <div class="artist-info">
-                <h3>${ArtistInfo[n - 1]['ArtistName']}</h3>
-            </div>
-        </a>
+      <div class="col-md-3 col-sm-6">
+        <div class="card">
+          <img src="${AlbumInfo[n]['AlbumCover'] + '?rand=' + Math.random().toString()}" class="card-img-top" alt="Baby Gravy Mix">
+          <a href="/album/${AlbumInfo[n]['AlbumID']}">
+          <div class="card-body">
+            <h5 class="card-title">${AlbumInfo[n]['AlbumTitle']}</h5>
+            <p class="card-text">${AlbumInfo[n]['ArtistName']}</p>
+          </div>
+          </a>
+        </div>
       </div>
     `;
     }
@@ -18,19 +40,16 @@ function trend_artist_render(ArtistInfo) {
     return content;
 }
 
-fetchDataWithCache('http://localhost:8000/api/index/10', "index")
+
+fetchDataWithCache(`http://localhost:8000/api/search/${query}`, "search")
     .then(data => {
+
         const renderPromises = [
-            renderWrapper(document.getElementById('top-artists-container'), trend_artist_render(data['TopArtists'])),
-            renderWrapper(document.getElementById('top-album-container'), trend_album_render(data['TopAlbum'])),
+            renderWrapper(document.getElementById('top-album-container'), album_renderer(data)),
         ];
 
         return Promise.all(renderPromises)
     })
-    .catch(error => {
-        console.error('There was a problem with your fetch operation:', error);
-        navigateTo("/404");
-    });
 
 
 // Cleanup function

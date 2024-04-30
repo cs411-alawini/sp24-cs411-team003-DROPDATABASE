@@ -8,7 +8,6 @@ const route = (event) => {
 const routes = {
     404: {html: "/static/pages/404.html", js: null, css: [], jsr: []},
     "/": {html: "/static/pages/index.html", js: "/static/js/index.js", css: [], jsr: []},
-    "/search": {html: "/static/pages/search.html", js: null, css: [], jsr: []},
     "/login": {html: "/static/pages/login.html", js: null, css: [], jsr: ['/static/js/login.js']},
     "/profile.html": {html: "/static/pages/profile.html", js: null, css: [], jsr: []},
     "/followers.html": {html: "/static/pages/followers.html", js: null, css: [], jsr: []},
@@ -28,6 +27,17 @@ const handleLocation = async () => {
 
     const path = window.location.pathname;
     let route = routes[path] || routes[404];
+
+
+        // Handle Post
+    if (path.match(/^\/search\/(.+)$/)) {
+        route = {
+            html: "/static/pages/search.html",
+            js: "/static/js/search.js",
+            css: [],
+            jsr: []
+        };
+    }
 
     const html = await fetch(route.html).then((data) => data.text());
 
