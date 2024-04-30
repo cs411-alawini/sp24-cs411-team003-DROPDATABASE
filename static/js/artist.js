@@ -22,7 +22,7 @@ function render_album_cover(ArtistInfo) {
 function render_album_info(ArtistInfo) {
     return `
         <h5 class="card-title">${ArtistInfo['ArtistName']}</h5>
-        <p class="card-text"><strong>Rating: </strong>${ArtistInfo['Rating'] === null ? '2.5' : AlbumInfo['Rating']}/5</p>
+        <p class="card-text"><strong>Rating: </strong>${ArtistInfo['Rating'] === null ? '2.5' : ArtistInfo['Rating']}/5</p>
         <p class="card-text"><small class="text-muted">Artist ID: ${ArtistInfo['ArtistID']}</small></p>    
     `
 }
