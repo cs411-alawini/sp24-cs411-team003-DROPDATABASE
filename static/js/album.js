@@ -23,7 +23,7 @@ function render_album_info(AlbumInfo) {
     return `
         <h5 class="card-title">${AlbumInfo['AlbumTitle']}</h5>
         <p class="card-text"><strong>Artist: </strong>${AlbumInfo['ArtistName']}</p>
-        <p class="card-text"><strong>Rating: </strong>${AlbumInfo['Rating']}/5</p>
+        <p class="card-text"><strong>Rating: </strong>${AlbumInfo['Rating'] === null ? '2.5' : AlbumInfo['Rating']}/5</p>
         <p class="card-text"><small class="text-muted">Album ID: ${AlbumInfo['AlbumID']}</small></p>
         <p class="card-text"><small class="text-muted">Artist ID: ${AlbumInfo['ArtistID']}</small></p>    
     `

@@ -49,6 +49,16 @@ const handleLocation = async () => {
         };
     }
 
+    // Handle Artist detail
+    if (path.match(/^\/artist\/(.+)$/)) {
+        route = {
+            html: "/static/pages/artist.html",
+            js: "/static/js/artist.js",
+            css: [],
+            jsr: []
+        };
+    }
+
 
     const html = await fetch(route.html).then((data) => data.text());
 

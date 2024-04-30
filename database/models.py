@@ -80,3 +80,10 @@ class Track(BaseModel):
 class AlbumDetail(BaseModel):
     AlbumInfo: AlbumInfo
     Tracks: List[Track]
+
+
+class ArtistDetail(BaseModel):
+    ArtistID: int
+    ArtistName: str
+    Rating: Optional[float]
+    ArtistCover: Optional[HttpUrl] = "https://api.cirno.me/anipic/"

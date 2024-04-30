@@ -292,7 +292,7 @@ def get_album_details_by_id(album_id: int):
     rows = sql_cur.execute(sql, (album_id,))
 
     album_info = AlbumInfo(AlbumID=rows[0]['AlbumID'], AlbumTitle=rows[0]['AlbumTitle'], ArtistID=rows[0]['ArtistID'],
-                            ArtistName=rows[0]['ArtistName'], Rating=rows[0]['AvgRating'])
+                           ArtistName=rows[0]['ArtistName'], Rating=rows[0]['AvgRating'])
     sql = '''
     SELECT 
         t.TrackID, 
@@ -312,6 +312,31 @@ def get_album_details_by_id(album_id: int):
         AlbumInfo=album_info,
         Tracks=track_info
     )
+
+
+@err_handler
+def get_artist_detail(artist_id: int):
+    sql = '''
+        SELECT 
+        ar.ArtistID,
+        ar.ArtistName,
+        AVG(ra.Rating) AS AvgRating
+    FROM Artist ar
+    JOIN ArtistAlbum aa ON ar.ArtistID = aa.ArtistID
+    JOIN Album a ON aa.AlbumID = a.AlbumID
+    LEFT JOIN RateAlbum ra ON a.AlbumID = ra.AlbumID
+    WHERE ar.ArtistID = %s
+    GROUP BY ar.ArtistID, ar.ArtistName;
+    '''
+
+    rows = sql_cur.execute(sql, (artist_id,))
+    info = ArtistDetail(
+        ArtistID=rows[0]['ArtistID'],
+        ArtistName=rows[0]['ArtistName'],
+        Rating=rows[0]['AvgRating']
+    )
+    return info
+
 
 @err_handler
 def get_recommendation_by_userid(user_id: int) -> AlbumRecommendationList:
