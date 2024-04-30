@@ -153,10 +153,9 @@ def get_userinfo(user_name: str) -> Optional[UserInfo]:
 @err_handler
 def search_album(query: str) -> List[AlbumCover]:
     sql = '''
-    SELECT * FROM Album a
+    SELECT DISTINCT a.AlbumID, a.AlbumTitle, ar.ArtistName FROM Album a
     JOIN artistalbum a2 ON a.AlbumID = a2.AlbumID
     JOIN artist ar ON a2.ArtistID = ar.ArtistID
-
     WHERE AlbumTitle LIKE %s
     LIMIT 20;
     '''
