@@ -4,6 +4,17 @@ from utils import LocalSQL, err_handler
 sql_cur = LocalSQL()
 
 
+def get_album_data(album_id: int) -> AlbumData:
+    sql = f'''
+        SELECT a.AlbumTitle, ar.ArtistName
+        FROM Album a
+        WHERE a.AlbumID = %s;
+    '''
+
+    album_data = sql_cur.execute(sql, (album_id,))
+    print(album_data)
+    return AlbumData(AlbumTitle=album_data['AlbumTitle'], ArtistName=album_data['ArtistName'])
+
 def get_index_data(top_n: int) -> IndexData:
     # return the data for rendering index page
     sql_albums = f'''

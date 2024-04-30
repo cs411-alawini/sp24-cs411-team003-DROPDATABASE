@@ -8,7 +8,8 @@ const route = (event) => {
 const routes = {
     404: {html: "/static/pages/404.html", js: null, css: [], jsr: []},
     "/": {html: "/static/pages/index.html", js: "/static/js/index.js", css: [], jsr: []},
-    "/search": {html: "/static/pages/search.html", js: null, css: [], jsr: []}
+    "/search": {html: "/static/pages/search.html", js: null, css: [], jsr: []},
+    "/album": {html: "/static/pages/album.html", js: "/static/js/album.js", css: [], jsr: []}
 };
 
 const loadedCSS = {};
@@ -24,6 +25,15 @@ const handleLocation = async () => {
 
     const path = window.location.pathname;
     let route = routes[path] || routes[404];
+
+    const albumRouteMatch = path.match(/^\/album\/(\d+)$/);
+    console.log("test");
+    var albumId = -1;
+    if (albumRouteMatch) {
+        route = routes['/album'];
+        albumId = albumRouteMatch[1];
+        console.log(albumId)
+    }
 
     const html = await fetch(route.html).then((data) => data.text());
 
@@ -74,7 +84,18 @@ const handleLocation = async () => {
         const script = document.createElement("script");
         script.src = route.js;
         script.className = 'route-script';
-        document.body.appendChild(script);
+        if (albumId != -1) {
+            console.log("test");
+            
+            script.onload = function() {
+                render_album(albumId);
+            };
+            document.body.appendChild(script);
+        }
+        else {
+            document.body.appendChild(script);
+        }
+
     }
 };
 

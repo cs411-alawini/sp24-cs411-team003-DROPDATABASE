@@ -3,8 +3,8 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from database.crud import get_index_data
-from database.models import IndexData
+from database.crud import get_index_data, get_album_data
+from database.models import IndexData, AlbumData
 
 app = FastAPI(
     title="MusicStack",
@@ -39,3 +39,8 @@ async def custom_404_handler(_, __):
 async def index(top_n: int) -> IndexData:
     # Make sure this function actually returns an IndexData object
     return get_index_data(top_n)
+
+
+@app.get('/api/album/{album_id}')
+async def index(album_id: int) -> AlbumData:
+    return get_album_data(album_id)

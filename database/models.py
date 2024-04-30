@@ -2,6 +2,10 @@ from pydantic import BaseModel, HttpUrl
 from typing import List, Optional
 
 
+class AlbumData(BaseModel):
+    AlbumTitle: str
+    ArtistName: str
+
 class AlbumRating(BaseModel):
     AlbumTitle: str
     AvgRating: float
