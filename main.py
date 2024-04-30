@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi import HTTPException
 from database.crud import get_index_data, get_userinfo, search_album, get_follower_by_userid, get_following_by_userid, \
-    get_user_playlist, unfollow_userid, get_user_playlist
+    get_user_playlist, unfollow_userid, get_user_playlist, follow_userid
 from database.models import IndexData, Message, AlbumCover
 
 from typing import List
@@ -128,3 +128,12 @@ async def get_userid(user_name: str) -> int:
         return user_info.UserID
     else:
         raise HTTPException(status_code=404, detail="User not found")
+
+
+@app.post('/api/user/{follower_id}/follow/{followee_id}')
+async def api_follow_userid(follower_id: int, followee_id: int):
+    try:
+        follow_userid(follower_id, followee_id)
+        return {"message": "Followed successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

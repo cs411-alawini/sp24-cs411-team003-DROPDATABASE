@@ -220,6 +220,7 @@ def get_following_by_userid(user_id: int) -> List[str]:
     rows = sql_cur.execute(sql, (user_id,))
     return [row['UserName'] for row in rows]
 
+
 @err_handler
 def follow_userid(follower_id: int, followee_id: int) -> None:
     # Check if followee_id exists in User table
@@ -271,3 +272,28 @@ def get_user_playlist(user_id: int) -> List[str]:
     rows = sql_cur.execute(sql, (user_id,))
     return [row['PlayListName'] for row in rows]
 
+
+@err_handler
+def follow_userid(follower_id: int, followee_id: int):
+    # Check if the user to follow exists
+    check_user_sql = '''
+        SELECT EXISTS(SELECT 1 FROM User WHERE UserID = %s) AS UserExists;
+    '''
+    exists = sql_cur.execute(check_user_sql, (followee_id,))
+    if not exists[0]['UserExists']:
+        raise Exception('User to follow does not exist.')
+
+    # Insert follow relation if not exists
+    follow_sql = '''
+        INSERT INTO UserFollow (UserID, FollowID)
+        SELECT * FROM (SELECT %s, %s) AS tmp
+        WHERE NOT EXISTS (
+            SELECT 1 FROM UserFollow WHERE UserID = %s AND FollowID = %s
+        ) LIMIT 1;
+    '''
+    try:
+        sql_cur.execute(follow_sql, (follower_id, followee_id, follower_id, followee_id))
+        sql_cur.commit()
+    except Exception as e:
+        sql_cur.rollback()
+        raise e

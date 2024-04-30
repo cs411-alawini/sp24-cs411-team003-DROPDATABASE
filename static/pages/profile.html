@@ -16,11 +16,6 @@
             <div class="card-body">
                 <!-- Dynamic Username -->
                 <h2 class="card-title username">Welcome back, </h2>
-                <!-- Dynamic Following and Followers -->
-<!--                <p class="card-text">-->
-<!--                    Following: <span id="following-count">0</span> |-->
-<!--                    Followers: <span id="followers-count">0</span>-->
-<!--                </p>-->
             </div>
         </div>
 
@@ -34,6 +29,14 @@
         <div class="mt-4">
             <h3>Following (<span id="following-count">0</span>)</h3>
             <ul id="following" class="list-group"></ul>
+        </div>
+
+        <div class="mt-4">
+            <h3>Add Friend</h3>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter user ID" id="friend-user-id">
+                <button class="btn btn-primary" type="button" id="add-friend-btn">Add Friend</button>
+            </div>
         </div>
 
         <!-- Dynamic Playlists Section -->

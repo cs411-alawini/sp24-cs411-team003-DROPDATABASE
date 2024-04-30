@@ -49,7 +49,33 @@ fetchUserID(username)
         fetchData(userID, '/followers', 'followers', 'followers-count');
         fetchData(userID, '/following', 'following', 'following-count');
         fetchData(userID, '/playlists', 'playlists');
+        document.getElementById('add-friend-btn').addEventListener('click', function() {
+    const friendUserID = document.getElementById('friend-user-id').value;
+    const followerID = userID; // You need to obtain the logged-in user's ID
+    console.log("I clicked");
+
+    fetch(`http://127.0.0.1:8000/api/user/${followerID}/follow/${friendUserID}`, {
+        method: 'POST'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to add friend');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert('Friend added successfully!');
+        // Clear input
+        document.getElementById('friend-user-id').value = '';
+    })
+    .catch(error => {
+        console.error('Error adding friend:', error);
+        alert(error);
+    });
+});
     });
     // .catch(error => {
     //     console.error('Error fetching user ID:', error);
     // });
+
+
